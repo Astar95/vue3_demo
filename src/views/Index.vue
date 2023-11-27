@@ -1,9 +1,54 @@
 <script setup  lang="ts">
+import Header from './layout/Header.vue'
+import Aside from './layout/Aside.vue'
+// import Main from './layout/Main.vue'
 </script>
 
 <template>
-  <div>首页</div>
+  <div class="index">
+    <div class="left">
+      <h4 style="height: 60px; text-align: center; line-height: 60px;">Bing酒店综合平台</h4>
+      <Aside></Aside>
+    </div>
+    <div class="right">
+      <div class="top">
+        <Header></Header>
+      </div>
+      <div class="content">下</div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.index{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  .left{
+    width: 200px;
+    height: 100vh;
+    background-color: #142334;
+    color: white;
+  }
+  .right{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .top{
+      height: 60px;
+      color: #fff;
+      background-color: #142334;
+      display: flex;
+      justify-content: flex-end;
+      .el-menu{
+        border-bottom: none;
+      }
+    }
+    .content{
+      flex: 1;
+      padding: 10px;
+    }
+  }
+}
 </style>

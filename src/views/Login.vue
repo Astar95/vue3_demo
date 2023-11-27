@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {ref,watch} from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { login } from '../api/user'
+import { login,reguser } from '../api/user'
 import {userStore} from '../store'
 import { ElMessage } from 'element-plus'
 import router  from '../router'
@@ -9,7 +9,6 @@ import router  from '../router'
 
 const ruleFormRef = ref<FormInstance>()
 const isRegister = ref(false)
-const form = ref()
 
 
 // 表单校验方法
@@ -29,14 +28,26 @@ const validatePwd = (_: any, value: any, callback: any) => {
     callback()
   }
 }
+// 验证确认密码
+const validateRePwd = (_: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('确认密码不能为空'))
+  } else if (value !== ruleForm.value.password) {
+    callback(new Error('两次密码不一致'))
+  } else {
+    callback()
+  }
+}
 const ruleForm = ref({
   username: '',
   password: '',
+  repassword:''
 })
 //验证对象
 const rules = ref<FormRules<typeof ruleForm>>({
   username: [{ validator: validateName, trigger: 'blur' }],
-  password: [{ validator: validatePwd, trigger: 'blur' }]
+  password: [{ validator: validatePwd, trigger: 'blur' }],
+  repassword: [{ validator: validateRePwd, trigger: 'blur' }]
 })
 
 const userData=userStore()
@@ -60,43 +71,44 @@ const userLogin =(formEl: FormInstance | undefined) => {
     }
   })
 }
-
+// 注册方法
+const userRegister=(formEl: FormInstance | undefined) =>{
+  if  (!formEl) return
+  formEl.validate(async (valid) => {
+    if (valid) {
+      // 请求注册接口
+      await reguser(ruleForm.value).then((res:any)=>{
+        if(res.code===200){
+          ElMessage.success('注册成功')
+          isRegister.value=false
+        }else{
+          ElMessage.error('注册失败')
+        }
+      })
+    }else {
+      return false
+    }
+  })
+}
 // 切换的时候，重置表单内容
 watch(isRegister, () => {
-  // formModel.value = {
-  //   username: '',
-  //   password: '',
-  //   repassword: ''
-  // }
+  ruleForm.value = {
+    username: '',
+    password: '',
+    repassword: ''
+  }
 })
 </script>
 
 <template>
-  <!-- 
-    1. 结构相关
-      el-row表示一行，一行分成24份 
-       el-col表示列  
-       (1) :span="12"  代表在一行中，占12份 (50%)
-       (2) :span="6"   表示在一行中，占6份  (25%)
-       (3) :offset="3" 代表在一行中，左侧margin份数
-
-       el-form 整个表单组件
-       el-form-item 表单的一行 （一个表单域）
-       el-input 表单元素（输入框）
-    2. 校验相关
-       (1) el-form => :model="ruleForm"      绑定的整个form的数据对象 { xxx, xxx, xxx }
-       (2) el-form => :rules="rules"         绑定的整个rules规则对象  { xxx, xxx, xxx }
-       (3) 表单元素 => v-model="ruleForm.xxx" 给表单元素，绑定form的子属性
-       (4) el-form-item => prop配置生效的是哪个校验规则 (和rules中的字段要对应)
-  -->
   <el-row class="login-page">
     <el-col :span="12" class="bg"></el-col>
     <el-col :span="6" :offset="3" class="form">
       <!-- 注册相关表单 -->
       <el-form
-        :model="formModel"
+        :model="ruleForm"
         :rules="rules"
-        ref="form"
+        ref="ruleFormRef"
         size="large"
         autocomplete="off"
         v-if="isRegister"
@@ -106,27 +118,27 @@ watch(isRegister, () => {
         </el-form-item>
         <el-form-item prop="username">
           <el-input
-            v-model="formModel.username"
+            v-model="ruleForm.username"
             placeholder="请输入用户名"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
-            v-model="formModel.password"
+            v-model="ruleForm.password"
             type="password"
             placeholder="请输入密码"
           ></el-input>
         </el-form-item>
         <el-form-item prop="repassword">
           <el-input
-            v-model="formModel.repassword"
+            v-model="ruleForm.repassword"
             type="password"
             placeholder="请输入再次密码"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button
-            @click="register"
+            @click="userRegister(ruleFormRef)"
             class="button"
             type="primary"
             auto-insert-space
