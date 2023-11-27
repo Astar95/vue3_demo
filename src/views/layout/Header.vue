@@ -4,6 +4,7 @@ import { HomeFilled,ChatLineRound,Message,Avatar } from '@element-plus/icons-vue
 
 <template>
     <el-menu
+        router
         class="el-menu-demo"
         mode="horizontal"
         :ellipsis="false"
@@ -11,26 +12,26 @@ import { HomeFilled,ChatLineRound,Message,Avatar } from '@element-plus/icons-vue
         text-color="#fff"
         active-text-color="#ffd04b"
     >
-        <el-menu-item index="1">
+        <el-menu-item index="/index/home">
             <el-icon><HomeFilled /></el-icon>
             首页
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="/index/mail">
             <el-icon><Message /></el-icon>
             邮箱
             </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="/index/message">
             <el-icon><ChatLineRound /></el-icon>
             消息
         </el-menu-item>
-        <el-sub-menu index="4">
+        <el-sub-menu index="admin">
             <template #title>
                 <el-icon><Avatar /></el-icon>
                 管理员
             </template>
-            <el-menu-item index="2-1">个人中心</el-menu-item>
-            <el-menu-item index="2-2">修改密码</el-menu-item>
-            <el-menu-item index="2-3">退出系统</el-menu-item>
+            <el-menu-item index="/index/mine">个人中心</el-menu-item>
+            <el-menu-item index="/index/setPwd">修改密码</el-menu-item>
+            <el-menu-item index="eitd">退出系统</el-menu-item>
         </el-sub-menu>
     </el-menu>
 </template>

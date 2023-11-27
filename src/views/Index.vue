@@ -1,7 +1,6 @@
 <script setup  lang="ts">
 import Header from './layout/Header.vue'
 import Aside from './layout/Aside.vue'
-// import Main from './layout/Main.vue'
 </script>
 
 <template>
@@ -14,7 +13,9 @@ import Aside from './layout/Aside.vue'
       <div class="top">
         <Header></Header>
       </div>
-      <div class="content">下</div>
+      <div class="content">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
