@@ -14,12 +14,17 @@ export const userStore = defineStore('user', () =>{
     const setToken = (newToken:any) => {
         token.value = newToken
       }
-    const setData=(data:object)=>{
+    const setData=(data:any)=>{
         userData.value=data
     }
     // 定义清除 token 的方法
     const removeToken = () => {
         token.value = ''
+    }
+    const removeUser=()=>{
+        userData.value={
+            username:''
+        }
     }
     // 返回 store 对象，包含 token、setToken、removeToken
     return  {
@@ -27,7 +32,8 @@ export const userStore = defineStore('user', () =>{
         userData,
         setToken,
         setData,
-        removeToken
+        removeToken,
+        removeUser
     }
 },
 {

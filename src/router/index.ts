@@ -20,7 +20,7 @@ const router=createRouter({
             component:()=>import('../views/Index.vue'),
             children: [
                 {
-                  path: 'home',
+                  path: '',
                   name: '主页',
                   meta:{title:'主页'},
                   component:()=>import('../views/Home.vue')

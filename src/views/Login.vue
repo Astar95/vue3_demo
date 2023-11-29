@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {ref,watch} from 'vue'
+import {ref,watch,onMounted} from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { login,reguser,getLoginInfo} from '../api/user'
 import {userStore} from '../store'
@@ -50,7 +50,7 @@ const rules = ref<FormRules<typeof ruleForm>>({
   repassword: [{ validator: validateRePwd, trigger: 'blur' }]
 })
 
-const userData=userStore()
+const useData=userStore()
 // 登录方法
 const userLogin =(formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -59,11 +59,11 @@ const userLogin =(formEl: FormInstance | undefined) => {
       // 请求登录接口
       await login(ruleForm.value).then(async (res:any)=>{
         if(res.code===200){
-          userData.setToken(res.token)
+          useData.setToken(res.token)
           const user=await getLoginInfo(ruleForm.value.username)
-          userData.setData(user.data)
+          useData.setData(user.data)
           ElMessage.success('登录成功')
-          router.push('/index/home')
+          router.push('/index')
         }else{
           ElMessage.error('登录失败')
         }
@@ -98,6 +98,11 @@ watch(isRegister, () => {
     username: '',
     password: '',
     repassword: ''
+  }
+})
+onMounted(()=>{
+  if(useData.userData.username){
+    router.push('/index')
   }
 })
 </script>
