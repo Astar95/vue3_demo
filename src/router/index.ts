@@ -10,11 +10,13 @@ const router=createRouter({
         {
             path:'/',
             name:'登录',
+            meta:{title:'登录'},
             component:()=>import('../views/Login.vue')
         },
         {
             path:'/index',
             name:'首页',
+            meta:{title:'首页'},
             component:()=>import('../views/Index.vue'),
             children: [
                 {
@@ -99,10 +101,12 @@ const router=createRouter({
         },
     ]
 })
-router.beforeEach((to, from, next) => { })
-router.afterEach((to, from) => {
-    if(to.meta  && to.meta.title){
-        document.title  = to.meta.title
-    } 
-})
+// router.beforeEach((to, from, next) => { 
+//   next()
+// })
+// router.afterEach((to, from) => {
+//   if (to.meta && to.meta.title) {
+//       document.title = to.meta.title
+//   }
+// })
 export default router

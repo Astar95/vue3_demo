@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {ref,watch} from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { login,reguser } from '../api/user'
+import { login,reguser,getLoginInfo} from '../api/user'
 import {userStore} from '../store'
 import { ElMessage } from 'element-plus'
 import router  from '../router'
@@ -57,11 +57,13 @@ const userLogin =(formEl: FormInstance | undefined) => {
   formEl.validate(async (valid) => {
     if (valid) {
       // 请求登录接口
-      await login(ruleForm.value).then((res:any)=>{
+      await login(ruleForm.value).then(async (res:any)=>{
         if(res.code===200){
           userData.setToken(res.token)
+          const user=await getLoginInfo(ruleForm.value.username)
+          userData.setData(user.data)
           ElMessage.success('登录成功')
-          router.push('/home')
+          router.push('/index/home')
         }else{
           ElMessage.error('登录失败')
         }
