@@ -2,15 +2,17 @@
 <script setup lang="ts">
 import { ref,onMounted } from 'vue';
 import { getRoleList,roleDelete } from '../../api/role'
-import GeneralTables from '../../components/user/GeneralTables.vue'
+import PublicTables from '../../components/PublicTables.vue'
 import AddorEditDrawer from '../../components/user/AddorEditDrawer.vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
+import PublicPagination from '../../components/PublicPagination.vue'
 
 // 获取角色列表
 const roleList = ref([])
-const getRoleListFun = async () => {
-  const res = await getRoleList(page.value,pageSize.value)
+const getRoleListFun = async (page?:any,pageSize?:any) => {
+  const res = await getRoleList(page,pageSize)
   roleList.value = res.data
+
   total.value=res.total
 }
 onMounted(()=>{
@@ -58,21 +60,11 @@ const onSuccess=()=>{
   getRoleListFun()
 }
 // 分页
-// 当前页数
-const page=ref(1)
-// 每页显示条目个数
-const  pageSize=ref(5)
 // 总数
 const total=ref(0)
-// page-size 改变时触发
-const handleSizeChange=(val:any)=>{
-  console.log(val,'page-size 改变时触发')
-}
-// current-page 改变时触发
-const handleCurrentChange=(val:any)=>{
-  page.value=val
-  getRoleListFun()
-  
+// 接收分页子组件传过来的数据--current-page 改变时触发
+const fetchData=(obj:any)=>{
+  getRoleListFun(obj.page,obj.pageSize)
 }
 </script>
 
@@ -84,7 +76,7 @@ const handleCurrentChange=(val:any)=>{
   <!-- 新增编辑抽屉 -->
   <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
   <!-- 表格 -->
-  <GeneralTables :tableData="roleList">
+  <PublicTables :tableData="roleList">
     <template #tableColumns>
       <el-table-column label="编号" align="center" prop="roleId">
       </el-table-column>
@@ -110,19 +102,9 @@ const handleCurrentChange=(val:any)=>{
       </template>
     </el-table-column>
     </template>
-  </GeneralTables>
+  </PublicTables>
   <!-- 分页 -->
-  <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
-    <el-pagination
-      v-model:current-page="page"
-      v-model:page-size="pageSize"
-      background
-      layout="total,prev, pager, next, jumper"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
-  </div>
+  <PublicPagination :total="total" @paginAtion="fetchData"></PublicPagination>
 </template>
 
 <style scoped lang="scss">
