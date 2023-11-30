@@ -34,6 +34,10 @@ const handleEdit=(row:any)=>{
 const handleDelete=(id:any)=>{
   console.log(id);
 }
+// 接收子组件传过来的数据--触发添加编辑成功后的回调
+const  onSuccess=()=>{
+  getRoleListFun()
+}
 </script>
 
 <template>
@@ -42,7 +46,7 @@ const handleDelete=(id:any)=>{
     <el-button type="primary" plain style="margin-bottom: 20px;" @click="addRole">添加</el-button>
   </div>
   <!-- 新增编辑抽屉 -->
-  <AddorEditDrawer ref="AddorEditRef"></AddorEditDrawer>
+  <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
   <!-- 表格 -->
   <GeneralTables :tableData="roleList">
     <template #tableColumns>
