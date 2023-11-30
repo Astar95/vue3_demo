@@ -5,7 +5,6 @@ import  {userStore}  from '../../store'
 import router from '../../router'
 const useStore=userStore()
 const exit=()=>{
-    console.log('点击退出');
     ElMessageBox.confirm(
     '确定要退出登录吗?',
     '提示',

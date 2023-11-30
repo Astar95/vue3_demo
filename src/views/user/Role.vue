@@ -1,9 +1,10 @@
 <!-- 角色管理 -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { getRoleList } from '../../api/role'
+import { getRoleList,roleDelete } from '../../api/role'
 import GeneralTables from '../../components/user/GeneralTables.vue'
 import AddorEditDrawer from '../../components/user/AddorEditDrawer.vue'
+import { ElMessage,ElMessageBox } from 'element-plus'
 
 // 获取角色列表
 const roleList = ref([])
@@ -31,11 +32,30 @@ const handleEdit=(row:any)=>{
 }
 
 // 删除
-const handleDelete=(id:any)=>{
-  console.log(id);
+const handleDelete=(roleId:any)=>{
+  ElMessageBox.confirm(
+    '确定要删除吗?',
+    '提示',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      await roleDelete(roleId).then(()=>{
+        ElMessage.success('删除成功')
+        getRoleListFun()
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消成功',
+      })
+    }
+  )
 }
 // 接收子组件传过来的数据--触发添加编辑成功后的回调
-const  onSuccess=()=>{
+const onSuccess=()=>{
   getRoleListFun()
 }
 </script>
@@ -68,7 +88,7 @@ const  onSuccess=()=>{
         <el-button
           size="small"
           type="danger"
-          @click="handleDelete(scope.row.id)"
+          @click="handleDelete(scope.row.roleId)"
           >删除</el-button
         >
       </template>

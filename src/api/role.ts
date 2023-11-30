@@ -9,3 +9,6 @@ export const roleAdd = (data: any) => post('/my/addRole', data)
 
 // 更新角色信息
 export const roleUpdate = (data: any) => post('/my/updateRole', data)
+
+// 删除角色信息
+export const roleDelete = (data: any) => get(`/my/deleteRole?roleId=${data}`)
