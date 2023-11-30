@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus'
-import { roleAdd } from '../../api/role'
+import { roleAdd,roleUpdate } from '../../api/role'
 import { ElMessage } from 'element-plus'
 // 抽屉状态
 const dialog=ref(false)
 // 定义一个ref对象绑定表单
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = ref({
-    id:'',
-    roleId:2,
+    roleId:null,
     roleName:''
 })
 const validRoleName = (_: any, value: any, callback: any) => {
@@ -29,16 +28,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
     if (valid) {
-      if(ruleForm.value.id){
-        console.log('编辑');
-        
+      if(ruleForm.value.roleId){
+        await roleUpdate(ruleForm.value).then(()=>{
+            dialog.value=false
+            ElMessage.success('编辑成功')
+            eimt('success')
+        })
       }else{
         //新增
-        const ruleFormData={
-            roleId:ruleForm.value.roleId,
-            roleName:ruleForm.value.roleName
-        }
-        await roleAdd(ruleFormData).then(()=>{
+        await roleAdd(ruleForm.value).then(()=>{
             dialog.value=false
             ElMessage.success('新增成功')
             eimt('success')
@@ -63,8 +61,9 @@ const closeDr=() =>{
 // 抽屉打开时的回调
 const open=(obj:any)=>{
     dialog.value=true
-    if(obj.id){
+    if(obj.roleId){
         ruleForm.value=obj
+        
     }else{
         console.log('新增');
     }
@@ -78,7 +77,7 @@ defineExpose({
 <template>
     <el-drawer
     v-model="dialog"
-    :title="ruleForm.id?'编辑角色':'新增角色'"
+    :title="ruleForm.roleId?'编辑角色':'新增角色'"
     direction="rtl"
     size="30%"
     @close="closeDr()"

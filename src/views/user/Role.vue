@@ -50,10 +50,7 @@ const  onSuccess=()=>{
   <!-- 表格 -->
   <GeneralTables :tableData="roleList">
     <template #tableColumns>
-      <el-table-column label="角色" align="center">
-      <template #default="scope">
-        <el-tag :type="scope.row.roleId===1?'success':'warning'">{{ scope.row.roleId }}</el-tag>
-      </template>
+      <el-table-column label="编号" align="center" prop="roleId">
       </el-table-column>
       <el-table-column label="角色名称" align="center">
         <template #default="scope">
