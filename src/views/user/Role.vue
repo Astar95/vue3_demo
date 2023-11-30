@@ -1,6 +1,6 @@
 <!-- 角色管理 -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import { getRoleList,roleDelete } from '../../api/role'
 import GeneralTables from '../../components/user/GeneralTables.vue'
 import AddorEditDrawer from '../../components/user/AddorEditDrawer.vue'
@@ -9,14 +9,13 @@ import { ElMessage,ElMessageBox } from 'element-plus'
 // 获取角色列表
 const roleList = ref([])
 const getRoleListFun = async () => {
-  const res = await getRoleList()
-  
+  const res = await getRoleList(page.value,pageSize.value)
   roleList.value = res.data
-  
+  total.value=res.total
 }
-getRoleListFun()
-
-
+onMounted(()=>{
+  getRoleListFun()
+})
 //定义编辑组件ref对象--通过AddorEditRef可以获取组件暴露的实例对象
 let AddorEditRef=ref()
 // 添加抽屉
@@ -58,6 +57,23 @@ const handleDelete=(roleId:any)=>{
 const onSuccess=()=>{
   getRoleListFun()
 }
+// 分页
+// 当前页数
+const page=ref(1)
+// 每页显示条目个数
+const  pageSize=ref(5)
+// 总数
+const total=ref(0)
+// page-size 改变时触发
+const handleSizeChange=(val:any)=>{
+  console.log(val,'page-size 改变时触发')
+}
+// current-page 改变时触发
+const handleCurrentChange=(val:any)=>{
+  page.value=val
+  getRoleListFun()
+  
+}
 </script>
 
 <template>
@@ -95,6 +111,18 @@ const onSuccess=()=>{
     </el-table-column>
     </template>
   </GeneralTables>
+  <!-- 分页 -->
+  <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+    <el-pagination
+      v-model:current-page="page"
+      v-model:page-size="pageSize"
+      background
+      layout="total,prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
 </template>
 
 <style scoped lang="scss">
