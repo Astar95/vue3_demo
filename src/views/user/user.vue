@@ -3,21 +3,40 @@
 import { ref,onMounted } from 'vue'
 import {getUserList,delUser}  from  '../../api/user'
 import { ElMessage,ElMessageBox } from 'element-plus'
-import PublicTables from '../../components/PublicTables.vue';
+import PublicTables from '../../components/PublicTables.vue'
+import PublicPagination from '../../components/PublicPagination.vue'
+import AddorEditDrawer from '../../components/user/AddorEditDrawer.vue'
 // 用户信息列表
 const userList = ref([])
 
 //获取用户信息列表
 const getUserData=async(page?:number,pageSize?:number)=>{
-  const  res=await getUserList(page,pageSize)
+  const res=await getUserList(page,pageSize)
   userList.value=res.data
+  total.value=res.total
+  
 }
 onMounted(()=>{
   getUserData()
 })
+//  分页总数
+const total=ref(0)
+// 接收分页子组件传过来的数据--current-page 改变时触发
+const fetchData=(obj:any)=>{
+  getUserData(obj.page,obj.pageSize)
+}
+//定义编辑组件ref对象--通过AddorEditRef可以获取组件暴露的实例对象
+let AddorEditRef=ref()
+// 新增
+const addUser=()=>{
+  // 通过ref调用子组件暴露出来的方法
+  AddorEditRef.value.open({})
+  
+}
 //编辑
 const handleEdit=(row:any)=>{
-  console.log(row);
+  // 通过ref调用子组件暴露出来的方法
+  AddorEditRef.value.open(row)
   
 }
 //删除
@@ -44,9 +63,20 @@ const handleDelete=async (id:any)=>{
     }
   )
 }
+// 接收子组件传过来的数据--触发添加编辑成功后的回调
+const onSuccess=()=>{
+  getUserData()
+}
 </script>
 
 <template>
+  <!-- 添加按钮 -->
+  <div>
+    <el-button type="primary" plain style="margin-bottom: 20px;" @click="addUser">添加</el-button>
+  </div>
+  <!-- 抽屉 -->
+  <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
+  <!-- 表格 -->
   <PublicTables :tableData="userList">
     <template #tableColumns>
       <el-table-column label="编号" width="120px" align="center" type="index" />
@@ -73,7 +103,9 @@ const handleDelete=async (id:any)=>{
     </el-table-column>
     </template>
   </PublicTables>
+  <!-- 分页 -->
+  <PublicPagination :total="total" @paginAtion="fetchData"></PublicPagination>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 </style>

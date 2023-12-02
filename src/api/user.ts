@@ -26,3 +26,13 @@ export const getUserList =(page:number=1,pageSize:number=5) => {
 export const delUser=(id:number)=>{
     return get(`/my/deleteUser?id=${id}`)
 }
+
+// 新增用户信息
+export const addUser=(data:object)=>{
+    return get('/my/addUser',data)
+}
+
+// 编辑用户信息
+export const editUser=(data:object)=>{
+    return get('/my/editUser',data)
+}

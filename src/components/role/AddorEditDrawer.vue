@@ -1,4 +1,3 @@
-<!-- 用户新增编辑抽屉 -->
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus'
@@ -9,48 +8,19 @@ const dialog=ref(false)
 // 定义一个ref对象绑定表单
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = ref({
-    id:null,
-    username:'',
-    password:'',
-    name:'',
-    userPic:'',
-    phone:'',
-    roleId:''
+    roleId:null,
+    roleName:''
 })
-const validRoleUserName = (_: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('账号不能为空'))
-  } else {
-    callback()
-  }
-}
-const validRolePwd = (_: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('密码不能为空'))
-  } else {
-    callback()
-  }
-}
 const validRoleName = (_: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('姓名不能为空'))
-  } else {
-    callback()
-  }
-}
-const validRolePhone = (_: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('电话不能为空'))
+    callback(new Error('角色名称不能为空'))
   } else {
     callback()
   }
 }
 //验证对象
 const rules = ref<FormRules<typeof ruleForm>>({
-    username: [{ validator: validRoleUserName, trigger: 'blur' }],
-    password: [{ validator: validRolePwd, trigger: 'blur' }],
-    name: [{ validator: validRoleName, trigger: 'blur' }],
-    phone: [{ validator: validRolePhone, trigger: 'blur' }],
+  roleName: [{ validator: validRoleName, trigger: 'blur' }]
 })
 const eimt=defineEmits(['success'])
 //提交
@@ -86,21 +56,14 @@ const resetForm = (formEl: FormInstance | undefined) => {
 //  抽屉关闭时的回调
 const closeDr=() =>{
   dialog.value=false
-    ruleForm.value={
-        id:null,
-        username:'',
-        password:'',
-        name:'',
-        userPic:'',
-        phone:'',
-        roleId:''
-    }
+  ruleFormRef.value?.resetFields()
 }
 // 抽屉打开时的回调
 const open=(obj:any)=>{
     dialog.value=true
     if(obj.roleId){
         ruleForm.value=obj
+        
     }
 }
 //将状态暴露出去
@@ -112,7 +75,7 @@ defineExpose({
 <template>
     <el-drawer
     v-model="dialog"
-    :title="ruleForm.id?'编辑用户':'新增用户'"
+    :title="ruleForm.roleId?'编辑角色':'新增角色'"
     direction="rtl"
     size="30%"
     @close="closeDr()"
@@ -125,23 +88,8 @@ defineExpose({
       label-width="120px"
       class="demo-ruleForm"
     >
-      <el-form-item label="账号" prop="username">
-        <el-input v-model="ruleForm.username" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="ruleForm.password" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="姓名" prop="name">
-        <el-input v-model="ruleForm.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="头像" prop="userPic">
-        <el-input v-model="ruleForm.userPic" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="角色" prop="roleId">
-        <el-input v-model="ruleForm.roleId" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="电话" prop="phone">
-        <el-input v-model="ruleForm.phone" autocomplete="off" />
+      <el-form-item label="角色名称" prop="roleName">
+        <el-input v-model="ruleForm.roleName" autocomplete="off" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(ruleFormRef)"

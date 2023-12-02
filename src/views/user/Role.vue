@@ -3,7 +3,7 @@
 import { ref,onMounted } from 'vue';
 import { getRoleList,roleDelete } from '../../api/role'
 import PublicTables from '../../components/PublicTables.vue'
-import AddorEditDrawer from '../../components/user/AddorEditDrawer.vue'
+import AddorEditDrawer from '../../components/role/AddorEditDrawer.vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import PublicPagination from '../../components/PublicPagination.vue'
 
