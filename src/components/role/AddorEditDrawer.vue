@@ -56,7 +56,10 @@ const resetForm = (formEl: FormInstance | undefined) => {
 //  抽屉关闭时的回调
 const closeDr=() =>{
   dialog.value=false
-  ruleFormRef.value?.resetFields()
+  ruleForm.value={
+      roleId:null,
+      roleName:''
+  }
 }
 // 抽屉打开时的回调
 const open=(obj:any)=>{

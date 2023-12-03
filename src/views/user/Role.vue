@@ -28,8 +28,10 @@ const addRole=()=>{
 
 // 编辑
 const handleEdit=(row:any)=>{
+  // 打开编辑抽屉时，使用深拷贝克隆表格数据到编辑表单中
+  const editForm =JSON.parse(JSON.stringify(row))
   // 通过ref调用子组件暴露出来的方法
-  AddorEditRef.value.open(row)
+  AddorEditRef.value.open(editForm)
 }
 
 // 删除
