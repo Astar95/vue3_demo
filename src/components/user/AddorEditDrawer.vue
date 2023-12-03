@@ -2,8 +2,8 @@
 <script setup lang="ts">
 import { ref,onMounted } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus'
-import { roleUpdate,getRoleList } from '../../api/role'
-import {addUser} from '../../api/user'
+import {getRoleList } from '../../api/role'
+import {addUser,editUser} from '../../api/user'
 import { ElMessage } from 'element-plus'
 import {baseURL_dev} from '../../config/baseURL'
 import { userStore } from '../../store'
@@ -73,14 +73,22 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid) => {
     if (valid) {
       if(ruleForm.value.id){
-        await roleUpdate(ruleForm.value).then(()=>{
+        const data={
+          id:ruleForm.value.id,
+          username:ruleForm.value.username,
+          password:ruleForm.value.password,
+          name:ruleForm.value.name,
+          roleId:ruleForm.value.roleId,
+          userPic:ruleForm.value.userPic,
+          phone:ruleForm.value.phone
+        }
+        await editUser(data).then(()=>{
             dialog.value=false
             ElMessage.success('编辑成功')
             eimt('success')
         })
       }else{
         //新增
-        console.log(ruleForm.value);
         await addUser(ruleForm.value).then(()=>{
             dialog.value=false
             ElMessage.success('新增成功')

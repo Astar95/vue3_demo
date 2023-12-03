@@ -81,7 +81,15 @@ const onSuccess=()=>{
       <el-table-column label="编号" width="120px" align="center" type="index" />
       <el-table-column label="账号" align="center" prop="username" />
       <el-table-column label="姓名" align="center" prop="name" />
-      <el-table-column label="头像" align="center" prop="userPic" />
+      <el-table-column label="头像" align="center">
+        <template #default="scope">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="scope.row.userPic "
+          >
+          </el-image>
+        </template>
+      </el-table-column>
       <el-table-column label="电话" align="center" prop="phone" />
       <el-table-column label="角色" align="center" prop="role.roleName" />
     </template>
