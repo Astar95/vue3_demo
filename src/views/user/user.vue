@@ -31,13 +31,11 @@ let AddorEditRef=ref()
 const addUser=()=>{
   // 通过ref调用子组件暴露出来的方法
   AddorEditRef.value.open({})
-  
 }
 //编辑
 const handleEdit=(row:any)=>{
   // 通过ref调用子组件暴露出来的方法
   AddorEditRef.value.open(row)
-  
 }
 //删除
 const handleDelete=async (id:any)=>{
@@ -67,6 +65,7 @@ const handleDelete=async (id:any)=>{
 const onSuccess=()=>{
   getUserData()
 }
+
 </script>
 
 <template>
