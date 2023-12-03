@@ -32,17 +32,16 @@ const submitForm = (formEl: FormInstance | undefined) => {
         await roleUpdate(ruleForm.value).then(()=>{
             dialog.value=false
             ElMessage.success('编辑成功')
-            eimt('success')
+            eimt('success','edit')
         })
       }else{
         //新增
         await roleAdd(ruleForm.value).then(()=>{
             dialog.value=false
             ElMessage.success('新增成功')
-            eimt('success')
+            eimt('success','add')
         })
       }
-      console.log('submit!',valid)
     } else {
       return false
     }

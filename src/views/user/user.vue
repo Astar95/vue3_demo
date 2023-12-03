@@ -63,9 +63,16 @@ const handleDelete=async (id:any)=>{
     }
   )
 }
+// 触发分页的ref
+const pageRef=ref()
 // 接收子组件传过来的数据--触发添加编辑成功后的回调
-const onSuccess=()=>{
-  getUserData()
+const onSuccess=(type:string)=>{
+  if(type==='add'){
+    pageRef.value.handleChange()
+
+  }else{
+    pageRef.value.handleEdit()
+  }
 }
 
 </script>
@@ -113,7 +120,7 @@ const onSuccess=()=>{
     </template>
   </PublicTables>
   <!-- 分页 -->
-  <PublicPagination :total="total" @paginAtion="fetchData"></PublicPagination>
+  <PublicPagination  ref="pageRef" :total="total" @paginAtion="fetchData"></PublicPagination>
 </template>
 
 <style scoped lang="scss">
