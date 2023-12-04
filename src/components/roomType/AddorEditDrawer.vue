@@ -24,6 +24,8 @@ const validRoomTypeName = (_: any, value: any, callback: any) => {
 const validRoomTypePrice = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('房型价格不能为空'))
+  }else if(!/^\d+(\.\d+)?$/.test(value)){
+    callback(new Error('只能输入数字且不能是负数'))
   } else {
     callback()
   }
@@ -31,6 +33,8 @@ const validRoomTypePrice = (_: any, value: any, callback: any) => {
 const validRoomTypeBedNum = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('床位数量不能为空'))
+  }else if(!/^\d+(\.\d+)?$/.test(value)){
+    callback(new Error('只能输入数字且不能是负数'))
   } else {
     callback()
   }
@@ -118,10 +122,10 @@ defineExpose({
         <el-input v-model="ruleForm.typeDescription" autocomplete="off" />
       </el-form-item>
       <el-form-item label="房型价格" prop="roomTypePrice">
-        <el-input v-model="ruleForm.roomTypePrice" autocomplete="off" />
+        <el-input v-model="ruleForm.roomTypePrice" autocomplete="off"/>
       </el-form-item>
       <el-form-item label="床位数量" prop="bedNum">
-        <el-input v-model="ruleForm.bedNum" autocomplete="off" />
+        <el-input v-model="ruleForm.bedNum" autocomplete="off"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm(ruleFormRef)"
