@@ -18,8 +18,8 @@ export const getLoginInfo =(data:string) => {
 }
 
 // 获取用户列表信息
-export const getUserList =(page:number=1,pageSize:number=5) => {
-    return get(`/my/userList?page=${page}&pageSize=${pageSize}`)
+export const getUserList =(page:number=1,pageSize:number=5,roleId:number=0) => {
+    return get(`/my/userList?page=${page}&pageSize=${pageSize}&roleId=${roleId}`)
 }
 
 // 删除用户信息

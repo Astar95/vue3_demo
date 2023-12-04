@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { ref,onMounted } from 'vue'
 import {getUserList,delUser}  from  '../../api/user'
+import {getRoleList} from '../../api/role'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import PublicTables from '../../components/PublicTables.vue'
 import PublicPagination from '../../components/PublicPagination.vue'
@@ -10,14 +11,24 @@ import AddorEditDrawer from '../../components/user/AddorEditDrawer.vue'
 const userList = ref([])
 
 //获取用户信息列表
-const getUserData=async(page?:number,pageSize?:number)=>{
-  const res=await getUserList(page,pageSize)
+const getUserData=async(page?:number,pageSize?:number,roleId?:number)=>{
+  const res=await getUserList(page,pageSize,roleId)
   userList.value=res.data
   total.value=res.total
   
 }
+// 获取角色信息列表
+const roleList=ref<any>([])
+const roleOption=ref<any>('')
+const getRole=async ()=>{
+  await getRoleList().then((res)=>{
+    roleList.value=res.data
+    
+  })
+}
 onMounted(()=>{
   getUserData()
+  getRole()
 })
 //  分页总数
 const total=ref(0)
@@ -74,13 +85,33 @@ const onSuccess=(type:string)=>{
     pageRef.value.handleEdit()
   }
 }
-
+// 根据roleId查询
+const queryUser=()=>{
+  getUserData(1,5,roleOption.value)
+}
+// 重置功能
+const resetting=()=>{
+  roleOption.value=''
+  getUserData()
+}
 </script>
 
 <template>
   <!-- 添加按钮 -->
-  <div>
+  <div style="display: flex; justify-content: space-between;">
     <el-button type="primary" plain style="margin-bottom: 20px;" @click="addUser">添加</el-button>
+    <div>
+      <el-select v-model="roleOption" clearable placeholder="请选择角色" style="margin-bottom: 20px; margin-right: 20px;" >
+        <el-option
+            v-for="item in roleList"
+            :key="item.roleId"
+            :label="item.roleName"
+            :value="item.roleId"
+          />
+      </el-select>
+      <el-button type="success" plain style="margin-bottom: 20px;" @click="queryUser">查询</el-button>
+      <el-button type="info" plain style="margin-bottom: 20px;" @click="resetting">重置</el-button>
+    </div>
   </div>
   <!-- 抽屉 -->
   <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
