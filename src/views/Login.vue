@@ -61,7 +61,6 @@ const userLogin =(formEl: FormInstance | undefined) => {
         if(res.code===200){
           useData.setToken(res.token)
           const user=await getLoginInfo(ruleForm.value.username)
-          console.log(user);
           
           useData.setData(user.data)
           ElMessage.success('登录成功')
