@@ -97,7 +97,8 @@ const resetting=()=>{
 </script>
 
 <template>
-  <!-- 添加按钮 -->
+  <el-scrollbar height="100%" style="padding: 20px;">
+      <!-- 添加按钮 -->
   <div style="display: flex; justify-content: space-between;">
     <el-button type="primary" plain style="margin-bottom: 20px;" @click="addUser">添加</el-button>
     <div>
@@ -110,7 +111,7 @@ const resetting=()=>{
           />
       </el-select>
       <el-button type="success" plain style="margin-bottom: 20px;" @click="queryUser">查询</el-button>
-      <el-button type="info" plain style="margin-bottom: 20px;" @click="resetting">重置</el-button>
+      <el-button type="warning" plain style="margin-bottom: 20px;" @click="resetting">重置</el-button>
     </div>
   </div>
   <!-- 抽屉 -->
@@ -152,7 +153,19 @@ const resetting=()=>{
   </PublicTables>
   <!-- 分页 -->
   <PublicPagination  ref="pageRef" :total="total" @paginAtion="fetchData"></PublicPagination>
+  </el-scrollbar>
 </template>
 
 <style scoped lang="scss">
+.scrollbar-demo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 4px;
+  background: var(--el-color-primary-light-9);
+  color: var(--el-color-primary);
+}
 </style>

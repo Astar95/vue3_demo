@@ -80,43 +80,46 @@ const fetchData=(obj:any)=>{
 </script>
 
 <template>
-  <!-- 添加按钮 -->
-  <div>
-    <el-button type="primary" plain style="margin-bottom: 20px;" @click="addRole">添加</el-button>
-  </div>
-  <!-- 新增编辑抽屉 -->
-  <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
-  <!-- 表格 -->
-  <PublicTables :tableData="roleList">
-    <template #tableColumns>
-      <el-table-column label="编号" align="center" prop="roleId">
-      </el-table-column>
-      <el-table-column label="角色名称" align="center">
+  <div style="padding: 20px;">
+    <!-- 添加按钮 -->
+    <div>
+      <el-button type="primary" plain style="margin-bottom: 20px;" @click="addRole">添加</el-button>
+    </div>
+    <!-- 新增编辑抽屉 -->
+    <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
+    <!-- 表格 -->
+    <PublicTables :tableData="roleList">
+      <template #tableColumns>
+        <el-table-column label="编号" align="center" prop="roleId">
+        </el-table-column>
+        <el-table-column label="角色名称" align="center">
+          <template #default="scope">
+            <el-tag :type="scope.row.roleId===1?'danger':''">{{ scope.row.roleName }}</el-tag>
+          </template>
+        </el-table-column>
+      </template>
+      <!-- 操作区域 -->
+      <template #operate>
+        <el-table-column label="编辑" align="center">
         <template #default="scope">
-          <el-tag :type="scope.row.roleId===1?'danger':''">{{ scope.row.roleName }}</el-tag>
+          <el-button size="small" @click="handleEdit(scope.row)"
+            >编辑</el-button
+          >
+          <el-button
+            size="small"
+            type="danger"
+            @click="handleDelete(scope.row.roleId)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
-    </template>
-    <!-- 操作区域 -->
-    <template #operate>
-      <el-table-column label="编辑" align="center">
-      <template #default="scope">
-        <el-button size="small" @click="handleEdit(scope.row)"
-          >编辑</el-button
-        >
-        <el-button
-          size="small"
-          type="danger"
-          @click="handleDelete(scope.row.roleId)"
-          >删除</el-button
-        >
       </template>
-    </el-table-column>
-    </template>
-  </PublicTables>
-  <!-- 分页 -->
-  <PublicPagination ref="pageRef" :total="total" @paginAtion="fetchData"></PublicPagination>
+    </PublicTables>
+    <!-- 分页 -->
+    <PublicPagination ref="pageRef" :total="total" @paginAtion="fetchData"></PublicPagination>
+  </div>
 </template>
 
 <style scoped lang="scss">
+
 </style>

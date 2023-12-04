@@ -58,7 +58,7 @@ onMounted(() =>{
     }
     .content{
       flex: 1;
-      padding: 10px;
+      height: calc(100vh - 60px);
     }
   }
 }
