@@ -101,9 +101,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 //  取消
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
+const resetForm = () => {
+  dialog.value=false
 }
 //  抽屉关闭时的回调
 const closeDr=() =>{
@@ -228,7 +227,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
         <el-button type="primary" @click="submitForm(ruleFormRef)"
           >提交</el-button
         >
-        <el-button @click="resetForm(ruleFormRef)">取消</el-button>
+        <el-button @click="resetForm()">取消</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>

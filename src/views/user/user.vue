@@ -63,7 +63,7 @@ const handleDelete=async (id:any)=>{
     }).then(async () => {
       await delUser(id).then(()=>{
         ElMessage.success('删除成功')
-        getUserData()
+        pageRef.value.handleEdit()
       })
     })
     .catch(() => {

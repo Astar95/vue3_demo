@@ -48,7 +48,7 @@ const handleDelete=(id:any)=>{
     }).then(async () => {
       await delRoomType(id).then(()=>{
         ElMessage.success('删除成功')
-        getRoomTypeFun()
+        pageRef.value.handleEdit()
       })
     })
     .catch(() => {
@@ -64,6 +64,7 @@ const pageRef=ref()
 // 接收子组件传过来的数据--触发添加编辑成功后的回调
 const onSuccess=(type:string)=>{
   if(type==='add'){
+    // 触发分页的方法
     pageRef.value.handleChange()
 
   }else{

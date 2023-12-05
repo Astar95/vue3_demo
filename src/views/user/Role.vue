@@ -47,7 +47,7 @@ const handleDelete=(roleId:any)=>{
     }).then(async () => {
       await roleDelete(roleId).then(()=>{
         ElMessage.success('删除成功')
-        getRoleListFun()
+        pageRef.value.handleEdit()
       })
     })
     .catch(() => {
