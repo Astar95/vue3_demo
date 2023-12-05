@@ -6,6 +6,7 @@ import PublicTables from '../../components/PublicTables.vue'
 import PublicPagination from '../../components/PublicPagination.vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import AddorEditDrawer from '../../components/room/AddorEditDrawer.vue'
+import * as ExcelJS from 'exceljs'
 const roomList=ref<any>([])
 // 获取请求传递的参数
 const data=ref<any>({
@@ -122,6 +123,46 @@ const resetting=()=>{
   data.value.roomTypeId=typeOption.value===''?0:typeOption.value
   getRoomData(data.value)
 }
+// 导出Excel
+const exportExcel=()=>{
+  ElMessageBox.confirm(
+    '是否确定导出当前页数据?',
+    '提示',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(() => {
+      // 获取当前页面表格的数据
+      const dataToExport = roomList.value
+
+      // 使用exceljs生成Excel文件
+      const workbook = new ExcelJS.Workbook()
+      const worksheet = workbook.addWorksheet('Sheet1')
+      //添加表头
+      worksheet.addRow(['房间号','房型','价格','床位数量','状态'])
+      // 添加数据
+      dataToExport.forEach((item:any)=>{
+      worksheet.addRow([item.roomId,item.roomType.roomTypeName,item.roomType.roomTypePrice,item.roomType.bedNum,item.roomState.roomStateName])
+      })
+      // 生成文件
+      workbook.xlsx.writeBuffer().then((buffer:any)=>{
+        const blob = new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = '房间信息.xlsx'
+        link.click()
+        URL.revokeObjectURL(link.href)
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消成功',
+      })
+    }
+  )
+}
 </script>
 
 <template>
@@ -146,6 +187,7 @@ const resetting=()=>{
             :value="item.roomStateId"
           />
       </el-select>
+      <el-button type="primary" plain style="margin-bottom: 20px;" @click="exportExcel">导出Excel</el-button>
       <el-button type="success" plain style="margin-bottom: 20px;" @click="queryUser">查询</el-button>
       <el-button type="warning" plain style="margin-bottom: 20px;" @click="resetting">重置</el-button>
     </div>
