@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { HomeFilled,ChatLineRound,Message,Avatar } from '@element-plus/icons-vue'
+import { HomeFilled,Avatar } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import  {userStore}  from '../../store'
 import router from '../../router'
@@ -48,14 +48,6 @@ const exit=()=>{
         <el-menu-item index="/index">
             <el-icon><HomeFilled /></el-icon>
             首页
-        </el-menu-item>
-        <el-menu-item index="/index/mail">
-            <el-icon><Message /></el-icon>
-            邮箱
-            </el-menu-item>
-        <el-menu-item index="/index/message">
-            <el-icon><ChatLineRound /></el-icon>
-            消息
         </el-menu-item>
         <el-sub-menu index="admin">
             <template #title>

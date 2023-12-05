@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {User,DishDot,Service,Setting,GobletSquareFull,GobletFull,
-  Watch,QuartzWatch,Basketball,Baseball,Folder,FolderOpened} from '@element-plus/icons-vue'
+import {User,DishDot,Service,GobletSquareFull,GobletFull,
+  Watch,QuartzWatch,Basketball,Baseball} from '@element-plus/icons-vue'
 </script>
 
 <template>
@@ -37,14 +37,6 @@ import {User,DishDot,Service,Setting,GobletSquareFull,GobletFull,
           </template>
           <el-menu-item index="/index/liveIn"><el-icon><Basketball /></el-icon>入住用户</el-menu-item>
           <el-menu-item index="/index/order"><el-icon><Baseball /></el-icon>客户订单</el-menu-item>
-        </el-sub-menu>
-        <el-sub-menu index="4">
-          <template  #title>
-            <el-icon><Setting /></el-icon>
-            <span>系统管理</span>
-          </template>
-          <el-menu-item index="/index/menu"><el-icon><Folder /></el-icon>菜单管理</el-menu-item>
-          <el-menu-item index="/index/dictionary"><el-icon><FolderOpened /></el-icon>字典管理</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-scrollbar>

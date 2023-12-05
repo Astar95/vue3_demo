@@ -26,18 +26,6 @@ const router=createRouter({
                   component:()=>import('../views/Home.vue')
                 },
                 {
-                  path: 'mail',
-                  name: '邮箱',
-                  meta:{title:'邮箱'},
-                  component:()=>import('../views/Mail.vue')
-                },
-                {
-                  path: 'message',
-                  name: '消息',
-                  meta:{title:'消息'},
-                  component:()=>import('../views/Message.vue')
-                },
-                {
                     path: 'mine',
                     name: '个人中心',
                     meta:{title:'个人中心'},
@@ -84,18 +72,6 @@ const router=createRouter({
                   name: '客户订单',
                   meta:{title:'客户订单'},
                   component:()=>import('../views/custom/Order.vue')
-                },
-                {
-                  path: 'menu',
-                  name: '菜单管理',
-                  meta:{title:'菜单管理'},
-                  component:()=>import('../views/system/Menu.vue')
-                },
-                {
-                  path: 'dictionary',
-                  name: '字典管理',
-                  meta:{title:'字典管理'},
-                  component:()=>import('../views/system/Dictionary.vue')
                 }
             ],
         },
