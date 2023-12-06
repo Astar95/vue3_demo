@@ -3,7 +3,7 @@
 import { ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus'
 import {getRoomTypeList,getRoomList} from '../../api/room'
-import {addGuest} from '../../api/guest'
+import {addGuest,getGuestRoomList} from '../../api/guest'
 import { ElMessage } from 'element-plus'
 // 抽屉状态
 const dialog=ref(false)
@@ -17,7 +17,7 @@ const ruleForm = ref({
   deposit:'',
   guestNum:'',
   resideDate:'',
-  roomType:'',
+  roomTypeId:'',
   resideStateId:1,
   roomId:''
 })
@@ -39,14 +39,23 @@ const getRoomData=async(obj?:any)=>{
     roomList.value=res.data
   })
 }
+// 根据顾客id获取顾客已经开好的房间
+const guestRoomData=ref<any>({})
+const getGuestRoomFun=async (obj:any)=>{
+  await getGuestRoomList(obj).then((res)=>{
+    guestRoomData.value=res.data
+    roomList.value.push(guestRoomData.value)
+  })
 
+  
+}
 // 监听房型列表选中
 const changeRoomType=(e:any)=>{
   ruleForm.value.roomId=''
   const data={
     page:1,
     pageSize:100,
-    roomStateId:0,
+    roomStateId:1,
     roomTypeId:e
   }
   getRoomData(data)
@@ -120,7 +129,7 @@ const validGuestNum = (_: any, value: any, callback: any) => {
 //验证对象
 const rules = ref<FormRules<typeof ruleForm>>({
   guestName:[{ validator: validGuestName, trigger: 'blur' }],
-  roomType:[{ validator: validRoomType, trigger: 'blur' }],
+  roomTypeId:[{ validator: validRoomType, trigger: 'blur' }],
   identityId:[{ validator: validIdentityId, trigger: 'blur' }],
   phone:[{ validator: validPhone, trigger: 'blur' }],
   deposit:[{ validator: validDeposit, trigger: 'blur' }],
@@ -207,7 +216,7 @@ const closeDr=() =>{
       guestNum:'',
       resideDate:'',
       resideStateId:1,
-      roomType:'',
+      roomTypeId:'',
       roomId:''
     }
 }
@@ -217,7 +226,18 @@ const open=(obj:any)=>{
     dialog.value=true
     if(obj.guestId){
         ruleForm.value=obj
-        ruleForm.value.roomType=obj.room.roomType.roomTypeName
+        ruleForm.value.roomTypeId=obj.room.roomTypeId
+        // 点击编辑打开抽屉时--再次获取房间信息
+        const roomData={
+          page:1,
+          pageSize:1000,
+          roomStateId:1,
+          roomTypeId:obj.room.roomTypeId
+        }
+      getRoomData(roomData)
+      getGuestRoomFun({guestId:obj.guestId,roomTypeId:obj.room.roomTypeId})
+    }else{
+      roomList.value=[]
     }
 }
 //将状态暴露出去
@@ -251,8 +271,8 @@ defineExpose({
       <el-form-item label="顾客电话" prop="phone">
         <el-input v-model="ruleForm.phone" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="房间类型" prop="roomType">
-        <el-select v-model="ruleForm.roomType" @change="changeRoomType" placeholder="请选择房间类型">
+      <el-form-item label="房间类型" prop="roomTypeId">
+        <el-select v-model="ruleForm.roomTypeId" @change="changeRoomType" placeholder="请选择房间类型">
           <el-option 
             v-for="item in roomTypeList"
             :key="item.roomTypeId"

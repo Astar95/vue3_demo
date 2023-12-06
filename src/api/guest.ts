@@ -11,3 +11,7 @@ get('/guest/getCheckOutList')
 // 新增顾客（入住用户）
 export const addGuest=(data:any)=>
 post('/guest/addGuest',data)
+
+// 根据顾客id获取顾客已经开好的房间
+export const getGuestRoomList=(data:any)=>
+get(`/guest/getGuestRoom?guestId=${data.guestId}&roomTypeId=${data.roomTypeId}`)

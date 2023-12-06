@@ -35,7 +35,6 @@ const getGuestListData=async(obj?:any)=>{
   await getGuestList(obj.page,obj.pageSize,obj.resideStateId,obj.guestName).then((res)=>{
     res.data.forEach((item:any)=>{
       item.resideDate=moment(item.resideDate).format('YYYY-MM-DD HH:mm:ss')
-      console.log(item.leaveDate);
       item.leaveDate=item.leaveDate===null?'':moment(item.leaveDate).format('YYYY-MM-DD HH:mm:ss')
     })
     guestList.value=res.data
@@ -60,7 +59,6 @@ const handleEdit=(row:any)=>{
   
   // 打开编辑抽屉时，使用深拷贝克隆表格数据到编辑表单中
   const editForm =JSON.parse(JSON.stringify(row))
-  editForm.id=666
   // 通过ref调用子组件暴露出来的方法
   AddorEditRef.value.open(editForm)
 }
