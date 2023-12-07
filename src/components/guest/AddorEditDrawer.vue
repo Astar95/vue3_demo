@@ -3,7 +3,7 @@
 import { ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus'
 import {getRoomTypeList,getRoomList} from '../../api/room'
-import {addGuest,getGuestRoomList} from '../../api/guest'
+import {addGuest,getGuestRoomList,editGuest} from '../../api/guest'
 import { ElMessage } from 'element-plus'
 // 抽屉状态
 const dialog=ref(false)
@@ -158,12 +158,21 @@ const submitForm = (formEl: FormInstance | undefined) => {
       
       if(ruleForm.value.guestId){
         //编辑
-        console.log('编辑');
+        await editGuest(data).then((res)=>{
+          if(res.code==200){
+              dialog.value=false
+              ElMessage.success('编辑成功')
+              eimt('success','edit')
+            }else{
+              dialog.value=false
+              ElMessage.error('编辑失败')
+            }
+        })
+        console.log('编辑',data);
         
       }else{
         //新增
         await addGuest(data).then((res)=>{
-            console.log(res);
             if(res.code==200){
               dialog.value=false
               ElMessage.success('新增成功')
@@ -175,27 +184,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
         })
       }
-      // const data={
-      //     roomId:ruleForm.value.roomId,
-      //     roomStateId:ruleForm.value.roomStateId,
-      //     roomTypeId:ruleForm.value.roomTypeId,
-      //     description:ruleForm.value.description
-      //   }
-      // if(ruleForm.value.id){
-      //   //编辑
-      //   await editRoom(data).then(()=>{
-      //       dialog.value=false
-      //       ElMessage.success('编辑成功')
-      //       eimt('success','edit')
-      //   })
-      // }else{
-      //   //新增
-      //   await addRoom(data).then(()=>{
-      //       dialog.value=false
-      //       ElMessage.success('新增成功')
-      //       eimt('success','add')
-      //   })
-      // }
     } else {
       return false
     }

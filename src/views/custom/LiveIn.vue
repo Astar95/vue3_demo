@@ -105,8 +105,8 @@ const onSuccess=(type:string)=>{
 const fetchData=(obj:any)=>{
   data.value={
     ...obj,
-    resideStateId:0,
-    guestName:0
+    resideStateId:stateOption.value===''?0:stateOption.value,
+    guestName:name.value===''?0:name.value
   }
   getGuestListData(data.value)
 }
@@ -120,9 +120,8 @@ const queryUser=()=>{
 const resetting=()=>{
   name.value=''
   stateOption.value=''
-  data.value.resideStateId=stateOption.value===''?0:stateOption.value
-  data.value.guestName=name.value===''?0:name.value
-  getGuestListData(data.value)
+  data.value.page=1
+  pageRef.value.handleCurrentChange(data.value.page)
 }
 // 导出Excel
 const exportExcel=()=>{

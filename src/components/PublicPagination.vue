@@ -33,7 +33,8 @@ const handleEdit=()=>{
 }
 defineExpose({
   handleChange,
-  handleEdit
+  handleEdit,
+  handleCurrentChange
 })
 </script>
 

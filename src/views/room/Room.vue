@@ -104,8 +104,8 @@ const onSuccess=(type:string)=>{
 const fetchData=(obj:any)=>{
   data.value={
     ...obj,
-    roomStateId:0,
-    roomTypeId:0
+    roomStateId:stateOption.value===''?0:stateOption.value,
+    roomTypeId:typeOption.value===''?0:typeOption.value
   }
   getRoomData(data.value)
 }
@@ -119,9 +119,9 @@ const queryUser=()=>{
 const resetting=()=>{
   typeOption.value=''
   stateOption.value=''
-  data.value.roomStateId=stateOption.value===''?0:stateOption.value
-  data.value.roomTypeId=typeOption.value===''?0:typeOption.value
-  getRoomData(data.value)
+  data.value.page=1
+  
+  pageRef.value.handleCurrentChange(data.value.page)
 }
 // 导出Excel
 const exportExcel=()=>{
