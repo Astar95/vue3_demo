@@ -37,12 +37,13 @@ const roomList=ref<any>([])
 const getRoomData=async(obj?:any)=>{
   await getRoomList(obj.page,obj.pageSize,obj.roomStateId,obj.roomTypeId).then((res)=>{
     roomList.value=res.data
+    
   })
 }
 // 根据顾客id获取顾客已经开好的房间
 const guestRoomData=ref<any>({})
-const getGuestRoomFun=async (obj:any)=>{
-  await getGuestRoomList(obj).then((res)=>{
+const getGuestRoomFun=async (guestId:any,roomTypeId:any)=>{
+  await getGuestRoomList(guestId,roomTypeId).then((res)=>{
     guestRoomData.value=res.data
     roomList.value.push(guestRoomData.value)
   })
@@ -222,20 +223,30 @@ const closeDr=() =>{
 }
 // 抽屉打开时的回调
 const open=(obj:any)=>{
-  
     dialog.value=true
+    
+    //有guestId的就是编辑
     if(obj.guestId){
-        ruleForm.value=obj
-        ruleForm.value.roomTypeId=obj.room.roomTypeId
-        // 点击编辑打开抽屉时--再次获取房间信息
-        const roomData={
+        ruleForm.value={
+          guestId:obj.guestId,
+          guestName:obj.guestName,
+          identityId:obj.identityId,
+          phone:obj.phone,
+          deposit:obj.deposit,
+          guestNum:obj.guestNum,
+          resideDate:obj.resideDate,
+          resideStateId:1,
+          roomTypeId:obj.room.roomTypeId,
+          roomId:obj.roomId
+        }
+        const data={
           page:1,
-          pageSize:1000,
+          pageSize:100,
           roomStateId:1,
           roomTypeId:obj.room.roomTypeId
         }
-      getRoomData(roomData)
-      getGuestRoomFun({guestId:obj.guestId,roomTypeId:obj.room.roomTypeId})
+        getRoomData(data)
+        getGuestRoomFun(obj.guestId,obj.room.roomTypeId)
     }else{
       roomList.value=[]
     }

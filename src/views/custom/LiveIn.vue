@@ -27,12 +27,12 @@ const data=ref<any>({
   resideStateId:0,
   guestName:0
 })
-// 时间格式化
 
 
 const total=ref(0)
 const getGuestListData=async(obj?:any)=>{
   await getGuestList(obj.page,obj.pageSize,obj.resideStateId,obj.guestName).then((res)=>{
+    
     res.data.forEach((item:any)=>{
       item.resideDate=moment(item.resideDate).format('YYYY-MM-DD HH:mm:ss')
       item.leaveDate=item.leaveDate===null?'':moment(item.leaveDate).format('YYYY-MM-DD HH:mm:ss')
