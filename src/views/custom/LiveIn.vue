@@ -1,7 +1,7 @@
 <!-- 入住用户 -->
 <script setup lang="ts">
 import { ref } from 'vue'
-import {getGuestList,getCheckOutStateList,checkOut} from '../../api/guest'
+import {getGuestList,getCheckOutStateList,checkOut,delGuest} from '../../api/guest'
 import PublicTables from '../../components/PublicTables.vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import PublicPagination from '../../components/PublicPagination.vue'
@@ -74,12 +74,10 @@ const handleDelete=(id:any)=>{
       cancelButtonText: '取消',
       type: 'warning',
     }).then(async () => {
-      console.log(id);
-      
-      // await delRoom(id).then(()=>{
-      //   ElMessage.success('删除成功')
-      //   pageRef.value.handleEdit()
-      // })
+      await delGuest(id).then(()=>{
+        ElMessage.success('删除成功')
+        pageRef.value.handleEdit()
+      })
     })
     .catch(() => {
       ElMessage({

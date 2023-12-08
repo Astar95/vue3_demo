@@ -20,6 +20,10 @@ post('/guest/editGuest',data)
 export const checkOut=(data:any)=>
 post('/guest/checkOut',data)
 
+// 删除顾客功能
+export const delGuest=(guestId:any)=>
+get(`/guest/delGuest?guestId=${guestId}`)
+
 // 根据顾客id获取顾客已经开好的房间
 export const getGuestRoomList=(guestId:any,roomTypeId:any)=>
 get(`/guest/getGuestRoom?guestId=${guestId}&roomTypeId=${roomTypeId}`)
