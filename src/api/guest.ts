@@ -16,6 +16,10 @@ post('/guest/addGuest',data)
 export const editGuest=(data:any)=>
 post('/guest/editGuest',data)
 
+// 结账功能
+export const checkOut=(data:any)=>
+post('/guest/checkOut',data)
+
 // 根据顾客id获取顾客已经开好的房间
 export const getGuestRoomList=(guestId:any,roomTypeId:any)=>
 get(`/guest/getGuestRoom?guestId=${guestId}&roomTypeId=${roomTypeId}`)

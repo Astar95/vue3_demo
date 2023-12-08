@@ -1,7 +1,7 @@
 <!-- 入住用户 -->
 <script setup lang="ts">
 import { ref } from 'vue'
-import {getGuestList,getCheckOutStateList} from '../../api/guest'
+import {getGuestList,getCheckOutStateList,checkOut} from '../../api/guest'
 import PublicTables from '../../components/PublicTables.vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import PublicPagination from '../../components/PublicPagination.vue'
@@ -123,6 +123,40 @@ const resetting=()=>{
   data.value.page=1
   pageRef.value.handleCurrentChange(data.value.page)
 }
+// 结账功能
+const checkout=(row:any)=>{
+  const obj={
+    guestId:row.guestId,
+    resideDate:row.resideDate,
+    roomTypePrice:row.room.roomType.roomTypePrice,
+    deposit:row.deposit,
+    roomId:row.roomId
+  }
+  ElMessageBox.confirm(
+    '是否确定结账?',
+    '提示',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () =>{
+      await checkOut(obj).then((res)=>{
+        if (res.code === 200) {
+          pageRef.value.handleEdit()
+          ElMessage({
+            type: 'success',
+            message: '结账成功',
+          })
+        }
+      })
+    }
+  ).catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消成功',
+      })
+  })
+}
 // 导出Excel
 const exportExcel=()=>{
   ElMessageBox.confirm(
@@ -210,7 +244,7 @@ const exportExcel=()=>{
           <el-button size="small" type="primary" v-if="scope.row.resideState.resideStateId===1" @click="handleEdit(scope.row)"
             >编辑</el-button
           >
-          <el-button size="small" type="success" v-if="scope.row.resideState.resideStateId===1">结账</el-button>
+          <el-button size="small" type="success" v-if="scope.row.resideState.resideStateId===1" @click="checkout(scope.row)">结账</el-button>
           <el-button
             size="small"
             type="danger"
