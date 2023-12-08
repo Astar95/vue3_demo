@@ -9,7 +9,7 @@ import router  from '../router'
 
 const ruleFormRef = ref<FormInstance>()
 const isRegister = ref(false)
-
+const checked=ref(false)
 
 // 表单校验方法
 // 验证账号
@@ -39,7 +39,7 @@ const validateRePwd = (_: any, value: any, callback: any) => {
   }
 }
 const ruleForm = ref({
-  username: '',
+  username:'',
   password: '',
   repassword:''
 })
@@ -51,6 +51,13 @@ const rules = ref<FormRules<typeof ruleForm>>({
 })
 
 const useData=userStore()
+
+// 获取记住我信息
+const userLoginDate=useData.userLogin
+ruleForm.value.username=userLoginDate.username===''?'':userLoginDate.username
+ruleForm.value.password=userLoginDate.password===''?'':userLoginDate.password
+checked.value=userLoginDate.checked
+
 // 登录方法
 const userLogin =(formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -61,8 +68,17 @@ const userLogin =(formEl: FormInstance | undefined) => {
         if(res.code===200){
           useData.setToken(res.token)
           const user=await getLoginInfo(ruleForm.value.username)
-          
           useData.setData(user.data)
+          //记住我
+          if(checked.value){
+            useData.setUserLogin({
+              username:ruleForm.value.username,
+              password:ruleForm.value.password,
+              checked:checked.value
+            })
+          }else{
+            useData.removeUserLogin()
+          }
           ElMessage.success('登录成功')
           router.push('/index')
         }else{
@@ -101,8 +117,12 @@ watch(isRegister, () => {
     repassword: ''
   }
 })
+// 记住我事件
+const checkedFun=(e:any)=>{
+  checked.value=e
+}
 onMounted(()=>{
-  if(useData.userData.username){
+  if(useData.token){
     router.push('/index')
   }
 })
@@ -189,8 +209,8 @@ onMounted(()=>{
         </el-form-item>
         <el-form-item class="flex">
           <div class="flex">
-            <el-checkbox>记住我</el-checkbox>
-            <el-link type="primary" :underline="false">忘记密码？</el-link>
+            <el-checkbox v-model="checked" @change="checkedFun">记住我</el-checkbox>
+            <el-link type="primary" :underline="false" @click="isRegister = true">没有账号？</el-link>
           </div>
         </el-form-item>
         <el-form-item>

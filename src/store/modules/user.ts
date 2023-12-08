@@ -10,6 +10,12 @@ export const userStore = defineStore('user', () =>{
     const userData=ref({
         username:''
     })
+    // 记住我--数据
+    const userLogin=ref({
+        username:'',
+        password:'',
+        checked:false
+    })
     // 定义设置 token 的方法
     const setToken = (newToken:any) => {
         token.value = newToken
@@ -26,14 +32,27 @@ export const userStore = defineStore('user', () =>{
             username:''
         }
     }
+    const setUserLogin=(data:any)=>{
+        userLogin.value=data
+    }
+    const removeUserLogin=()=>{
+        userLogin.value={
+            username:'',
+            password:'',
+            checked:false
+        }
+    }
     // 返回 store 对象，包含 token、setToken、removeToken
     return  {
         token,
         userData,
+        userLogin,
         setToken,
         setData,
         removeToken,
-        removeUser
+        removeUser,
+        setUserLogin,
+        removeUserLogin
     }
 },
 {

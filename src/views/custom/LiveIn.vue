@@ -128,7 +128,9 @@ const checkout=(row:any)=>{
     resideDate:row.resideDate,
     roomTypePrice:row.room.roomType.roomTypePrice,
     deposit:row.deposit,
-    roomId:row.roomId
+    roomId:row.roomId,
+    roomTypeId:row.room.roomTypeId,
+    typeTotalMoney:row.room.roomType.typeTotalMoney
   }
   ElMessageBox.confirm(
     '是否确定结账?',

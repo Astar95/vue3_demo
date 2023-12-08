@@ -66,23 +66,9 @@ const router=createRouter({
                   name: '入住用户',
                   meta:{title:'入住用户'},
                   component:()=>import('../views/custom/LiveIn.vue')
-                },
-                {
-                  path: 'order',
-                  name: '客户订单',
-                  meta:{title:'客户订单'},
-                  component:()=>import('../views/custom/Order.vue')
                 }
             ],
         },
     ]
 })
-// router.beforeEach((to, from, next) => { 
-//   next()
-// })
-// router.afterEach((to, from) => {
-//   if (to.meta && to.meta.title) {
-//       document.title = to.meta.title
-//   }
-// })
 export default router

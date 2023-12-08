@@ -45,3 +45,7 @@ export const editRoom = (data:any) =>{
 export const delRoom = (id:number) =>{
     return get(`/room/delRoom?roomId=${id}`)
 }
+// 查询酒店房型销售额信息
+export const hotelSaleInfo=()=>{
+    return get('/room/hotelSaleInfo')
+}
