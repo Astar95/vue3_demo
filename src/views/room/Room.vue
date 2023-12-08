@@ -226,12 +226,14 @@ const exportExcel=()=>{
         <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button size="small" @click="handleEdit(scope.row)"
+          v-if="scope.row.roomState.roomStateId!==2"
             >编辑</el-button
           >
           <el-button
             size="small"
             type="danger"
             @click="handleDelete(scope.row.roomId)"
+            v-if="scope.row.roomState.roomStateId!==2"
             >删除</el-button
           >
         </template>

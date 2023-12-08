@@ -9,12 +9,12 @@ const instance = axios.create({
     baseURL: baseURL_dev,
     timeout: 3000
 });
-
+// TODO 2. 携带token
+const useStore = userStore()
 // 请求拦截器
 instance.interceptors.request.use(
     (config) => {
-      // TODO 2. 携带token
-      const useStore = userStore()
+
       if (useStore.token) {
         config.headers.Authorization = useStore.token
       }
@@ -26,12 +26,21 @@ instance.interceptors.request.use(
   // 响应拦截器
   instance.interceptors.response.use(
     (res) => {
+      if(res.data.code === 401){
+        useStore.removeToken()
+        useStore.removeUser()
+        ElMessage.error('登录Token过期，请重新登录')
+        router.push('/login')
+      }
       return res
     },
     (err) => {
+      console.log(err);
+      
       // TODO 5. 处理401错误
       // 错误的特殊情况 => 401 权限不足 或 token 过期 => 拦截到登录
-      if (err.response?.status === 401) {
+      if (err.response.status === 401) {
+        
         router.push('/login')
       }
   

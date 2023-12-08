@@ -9,6 +9,7 @@ const totalNum= defineProps({
 const page=ref(1)
 // 每页显示条目个数
 const pageSize=ref(5)
+const total=ref(0)
 // page-size 改变时触发
 const handleSizeChange=(val:any)=>{
   console.log(val,'page-size 改变时触发')

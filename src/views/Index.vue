@@ -2,14 +2,8 @@
 import Header from './layout/Header.vue'
 import Aside from './layout/Aside.vue'
 import { onMounted } from 'vue'
-import {userStore} from '../store'
-import router  from '../router'
-const useStore  = userStore()
-
 onMounted(() =>{
-  if(!useStore.userData.username){
-    router.push('/login')
-  }
+  
 })
 </script>
 
