@@ -52,7 +52,7 @@ const exit=()=>{
         <el-sub-menu index="admin">
             <template #title>
                 <el-icon><Avatar /></el-icon>
-                管理员
+                {{ useStore.userData.name }}
             </template>
             <el-menu-item index="/index/mine">个人中心</el-menu-item>
             <el-menu-item index="/index/setPwd">修改密码</el-menu-item>

@@ -8,7 +8,8 @@ export const userStore = defineStore('user', () =>{
     const token = ref('')
     // 用户登录的数据
     const userData=ref({
-        username:''
+        username:'',
+        name:''
     })
     // 记住我--数据
     const userLogin=ref({

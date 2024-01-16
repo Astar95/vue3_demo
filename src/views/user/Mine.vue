@@ -24,7 +24,7 @@ const userInfo = ref<any>({
 // 获取当前登录的个人信息
 const getUserData=async ()=>{
   await getLoginInfo(useStore.userData.username).then((res)=>{
-    userInfo.value=res.data
+    userInfo.value=JSON.parse(JSON.stringify(res.data))
   })
 }
 // 获取角色信息列表
