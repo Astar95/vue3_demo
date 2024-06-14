@@ -8,12 +8,12 @@ export const userStore = defineStore('user', () =>{
     const token = ref('')
     // 用户登录的数据
     const userData=ref({
-        username:'',
+        phone:'',
         name:''
     })
     // 记住我--数据
     const userLogin=ref({
-        username:'',
+        phone:'',
         password:'',
         checked:false
     })
@@ -30,7 +30,8 @@ export const userStore = defineStore('user', () =>{
     }
     const removeUser=()=>{
         userData.value={
-            username:''
+            phone:'',
+            name:''
         }
     }
     const setUserLogin=(data:any)=>{
@@ -38,7 +39,7 @@ export const userStore = defineStore('user', () =>{
     }
     const removeUserLogin=()=>{
         userLogin.value={
-            username:'',
+            phone:'',
             password:'',
             checked:false
         }

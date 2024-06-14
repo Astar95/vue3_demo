@@ -3,18 +3,18 @@ import {post,get} from '../utils/request.ts'
 //  登录接口
 export const login =(data: object) => {
     
-    return post('/api/login', data)
+    return post('login', data)
 }
 
 // 注册接口
-export const reguser =(data: object) => {
+export const register =(data: object) => {
 
-    return post('/api/reguser', data)
+    return post('register', data)
 }
 
 // 获取登录信息
 export const getLoginInfo =(data:string) => {
-    return get(`/my/getUserInfo?username=${data}`)
+    return get(`/my/getUserInfo?phone=${data}`)
 }
 
 // 获取用户列表信息

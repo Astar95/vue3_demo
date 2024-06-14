@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {ref,watch,onMounted} from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { login,reguser,getLoginInfo} from '../api/user'
+import { login,register,getLoginInfo} from '../api/user'
 import {userStore} from '../store'
-import { ElMessage } from 'element-plus'
+     import { ElMessage } from 'element-plus';
 import router  from '../router'
 
 
@@ -13,9 +13,9 @@ const checked=ref(false)
 
 // 表单校验方法
 // 验证账号
-const validateName = (_: any, value: any, callback: any) => {
+const validatePhone = (_: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('用户名不能为空'))
+    callback(new Error('手机号不能为空'))
   } else {
     callback()
   }
@@ -39,13 +39,13 @@ const validateRePwd = (_: any, value: any, callback: any) => {
   }
 }
 const ruleForm = ref({
-  username:'',
+  phone:'',
   password: '',
   repassword:''
 })
 //验证对象
 const rules = ref<FormRules<typeof ruleForm>>({
-  username: [{ validator: validateName, trigger: 'blur' }],
+  phone: [{ validator: validatePhone, trigger: 'blur' }],
   password: [{ validator: validatePwd, trigger: 'blur' }],
   repassword: [{ validator: validateRePwd, trigger: 'blur' }]
 })
@@ -54,7 +54,7 @@ const useData=userStore()
 
 // 获取记住我信息
 const userLoginDate=useData.userLogin
-ruleForm.value.username=userLoginDate.username===''?'':userLoginDate.username
+ruleForm.value.phone=userLoginDate.phone===''?'':userLoginDate.phone
 ruleForm.value.password=userLoginDate.password===''?'':userLoginDate.password
 checked.value=userLoginDate.checked
 
@@ -67,12 +67,12 @@ const userLogin =(formEl: FormInstance | undefined) => {
       await login(ruleForm.value).then(async (res:any)=>{
         if(res.code===200){
           useData.setToken(res.token)
-          const user=await getLoginInfo(ruleForm.value.username)
+          const user=await getLoginInfo(ruleForm.value.phone)
           useData.setData(user.data)
           //记住我
           if(checked.value){
             useData.setUserLogin({
-              username:ruleForm.value.username,
+              phone:ruleForm.value.phone,
               password:ruleForm.value.password,
               checked:checked.value
             })
@@ -96,7 +96,7 @@ const userRegister=(formEl: FormInstance | undefined) =>{
   formEl.validate(async (valid) => {
     if (valid) {
       // 请求注册接口
-      await reguser(ruleForm.value).then((res:any)=>{
+      await register(ruleForm.value).then((res:any)=>{
         if(res.code===200){
           ElMessage.success('注册成功')
           isRegister.value=false
@@ -112,7 +112,7 @@ const userRegister=(formEl: FormInstance | undefined) =>{
 // 切换的时候，重置表单内容
 watch(isRegister, () => {
   ruleForm.value = {
-    username: '',
+    phone: '',
     password: '',
     repassword: ''
   }
@@ -130,7 +130,6 @@ onMounted(()=>{
 
 <template>
   <el-row class="login-page">
-    <el-col :span="12" class="bg"></el-col>
     <el-col :span="6" :offset="3" class="form">
       <!-- 注册相关表单 -->
       <el-form
@@ -144,10 +143,10 @@ onMounted(()=>{
         <el-form-item>
           <h1>注册</h1>
         </el-form-item>
-        <el-form-item prop="username">
+        <el-form-item prop="phone">
           <el-input
-            v-model="ruleForm.username"
-            placeholder="请输入用户名"
+            v-model="ruleForm.phone"
+            placeholder="请输入手机号"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -161,7 +160,7 @@ onMounted(()=>{
           <el-input
             v-model="ruleForm.repassword"
             type="password"
-            placeholder="请输入再次密码"
+            placeholder="请再次输入密码"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -193,10 +192,10 @@ onMounted(()=>{
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
-        <el-form-item prop="username">
+        <el-form-item prop="phone">
           <el-input
-            v-model="ruleForm.username"
-            placeholder="请输入用户名"
+            v-model="ruleForm.phone"
+            placeholder="请输入手机号"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -236,13 +235,6 @@ onMounted(()=>{
 .login-page {
   height: 100vh;
   background-color: #fff;
-  .bg {
-    background-image: url('../assets/login.jpg');
-    width: 100%;
-    height: 100%;
-    background-size: 100% 100%;
-    border-radius: 0 20px 20px 0;
-  }
   .form {
     display: flex;
     flex-direction: column;
@@ -257,7 +249,6 @@ onMounted(()=>{
     .flex {
       width: 100%;
       display: flex;
-      justify-content: space-between;
     }
   }
 }
