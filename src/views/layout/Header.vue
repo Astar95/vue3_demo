@@ -20,7 +20,7 @@ const exit=()=>{
         message: '退出成功',
       })
       // 退出成功清空缓存
-      useStore.removeToken()
+      useStore.removeSessionid()
       useStore.removeUser()
       // 跳转到登录页面
       router.push('/login')
@@ -47,7 +47,15 @@ const exit=()=>{
     >
         <el-menu-item index="/index">
             <el-icon><HomeFilled /></el-icon>
-            首页
+            智能客服
+        </el-menu-item>
+        <el-menu-item index="/index">
+            <el-icon><HomeFilled /></el-icon>
+            项目管理
+        </el-menu-item>
+        <el-menu-item index="/index">
+            <el-icon><HomeFilled /></el-icon>
+            账户管理
         </el-menu-item>
         <el-sub-menu index="admin">
             <template #title>

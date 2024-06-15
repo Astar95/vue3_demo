@@ -10,7 +10,7 @@ onMounted(() =>{
 <template>
   <div class="index">
     <div class="left">
-      <h4 style="height: 60px; text-align: center; line-height: 60px;">狗熊岭酒店管理平台</h4>
+      <h4 style="height: 60px; text-align: center; line-height: 60px;">数字孪生管理平台</h4>
       <Aside></Aside>
     </div>
     <div class="right">
