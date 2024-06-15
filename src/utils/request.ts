@@ -16,7 +16,6 @@ instance.interceptors.request.use(
     (config) => {
       // TODO 3. 给请求头加上sessionId
         config.headers['session_id'] = sessionStorage.getItem('session_id')
-      
       return config
     },
     (err) => Promise.reject(err)

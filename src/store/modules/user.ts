@@ -5,7 +5,7 @@ import { ref } from 'vue'
 // 定义 'user' store
 export const userStore = defineStore('user', () =>{
      // 定义 sessionid 变量，并使用 ref 包装
-    const sessionid = ref('')
+    const session_id = ref('')
     // 用户登录的数据
     const userData=ref({
         phone:'',
@@ -17,16 +17,16 @@ export const userStore = defineStore('user', () =>{
         password:'',
         checked:false
     })
-    // 定义设置 sessionid 的方法
+    // 定义设置 session_id 的方法
     const setSessionid = (newSessionid:any) => {
-        sessionid.value = newSessionid
+        session_id.value = newSessionid
       }
     const setData=(data:any)=>{
         userData.value=data
     }
-    // 定义清除 sessionid 的方法
+    // 定义清除 session_id 的方法
     const removeSessionid = () => {
-        sessionid.value = ''
+        session_id.value = ''
     }
     const removeUser=()=>{
         userData.value={
@@ -44,9 +44,9 @@ export const userStore = defineStore('user', () =>{
             checked:false
         }
     }
-    // 返回 store 对象，包含 sessionid、userData、userLogin、setSessionid、setData、removeSessionid、removeUser、setUserLogin、removeUserLogin 方法
+    // 返回 store 对象，包含 session_id、userData、userLogin、setSessionid、setData、removeSessionid、removeUser、setUserLogin、removeUserLogin 方法
     return  {
-        sessionid,
+        session_id,
         userData,
         userLogin,
         setSessionid,

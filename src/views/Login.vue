@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {ref,watch,onMounted} from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { login,register,getLoginInfo} from '../api/user'
+import { login,register} from '../api/user'
 import {userStore} from '../store'
      import { ElMessage } from 'element-plus';
 import router  from '../router'
@@ -68,18 +68,18 @@ const userLogin =(formEl: FormInstance | undefined) => {
         if(res.message==='success'){
           //登录成功后保存session_id
           sessionStorage.setItem('session_id',res.data.session_id)
-          const user=await getLoginInfo(ruleForm.value.phone)
-          useData.setData(user.data)
-          //记住我
-          if(checked.value){
-            useData.setUserLogin({
-              phone:ruleForm.value.phone,
-              password:ruleForm.value.password,
-              checked:checked.value
-            })
-          }else{
-            useData.removeUserLogin()
-          }
+          // const user=await getLoginInfo(ruleForm.value.phone)
+          // useData.setData(user.data)
+          // //记住我
+          // if(checked.value){
+          //   useData.setUserLogin({
+          //     phone:ruleForm.value.phone,
+          //     password:ruleForm.value.password,
+          //     checked:checked.value
+          //   })
+          // }else{
+          //   useData.removeUserLogin()
+          // }
           ElMessage.success('登录成功')
           router.push('/index')
         }else{
@@ -123,7 +123,7 @@ const checkedFun=(e:any)=>{
   checked.value=e
 }
 onMounted(()=>{
-  if(useData.token){
+  if(useData.session_id){
     router.push('/index')
   }
 })
