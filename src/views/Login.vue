@@ -65,8 +65,9 @@ const userLogin =(formEl: FormInstance | undefined) => {
     if (valid) {
       // 请求登录接口
       await login(ruleForm.value).then(async (res:any)=>{
-        if(res.code===200){
-          useData.setToken(res.token)
+        if(res.message==='success'){
+          //登录成功后保存session_id
+          sessionStorage.setItem('session_id',res.data.session_id)
           const user=await getLoginInfo(ruleForm.value.phone)
           useData.setData(user.data)
           //记住我
@@ -97,7 +98,7 @@ const userRegister=(formEl: FormInstance | undefined) =>{
     if (valid) {
       // 请求注册接口
       await register(ruleForm.value).then((res:any)=>{
-        if(res.code===200){
+        if(res.message==='success'){
           ElMessage.success('注册成功')
           isRegister.value=false
         }else{

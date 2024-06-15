@@ -4,8 +4,8 @@ import { ref } from 'vue'
 // 第一个参数是应用程序中 store 的唯一 id
 // 定义 'user' store
 export const userStore = defineStore('user', () =>{
-     // 定义 token 变量，并使用 ref 包装
-    const token = ref('')
+     // 定义 sessionid 变量，并使用 ref 包装
+    const sessionid = ref('')
     // 用户登录的数据
     const userData=ref({
         phone:'',
@@ -17,16 +17,16 @@ export const userStore = defineStore('user', () =>{
         password:'',
         checked:false
     })
-    // 定义设置 token 的方法
-    const setToken = (newToken:any) => {
-        token.value = newToken
+    // 定义设置 sessionid 的方法
+    const setSessionid = (newSessionid:any) => {
+        sessionid.value = newSessionid
       }
     const setData=(data:any)=>{
         userData.value=data
     }
-    // 定义清除 token 的方法
-    const removeToken = () => {
-        token.value = ''
+    // 定义清除 sessionid 的方法
+    const removeSessionid = () => {
+        sessionid.value = ''
     }
     const removeUser=()=>{
         userData.value={
@@ -44,14 +44,14 @@ export const userStore = defineStore('user', () =>{
             checked:false
         }
     }
-    // 返回 store 对象，包含 token、setToken、removeToken
+    // 返回 store 对象，包含 sessionid、userData、userLogin、setSessionid、setData、removeSessionid、removeUser、setUserLogin、removeUserLogin 方法
     return  {
-        token,
+        sessionid,
         userData,
         userLogin,
-        setToken,
+        setSessionid,
         setData,
-        removeToken,
+        removeSessionid,
         removeUser,
         setUserLogin,
         removeUserLogin
