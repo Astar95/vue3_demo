@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { HomeFilled,Avatar } from '@element-plus/icons-vue'
+import { Service,Postcard,User,Avatar } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import  {userStore}  from '../../store'
 import router from '../../router'
@@ -46,15 +46,15 @@ const exit=()=>{
         active-text-color="#ffd04b"
     >
         <el-menu-item index="/index">
-            <el-icon><HomeFilled /></el-icon>
+          <el-icon><Service /></el-icon>
             智能客服
         </el-menu-item>
         <el-menu-item index="/index">
-            <el-icon><HomeFilled /></el-icon>
+          <el-icon><Postcard /></el-icon>
             项目管理
         </el-menu-item>
         <el-menu-item index="/index">
-            <el-icon><HomeFilled /></el-icon>
+          <el-icon><User /></el-icon>
             账户管理
         </el-menu-item>
         <el-sub-menu index="admin">
