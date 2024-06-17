@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { ref,onMounted } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus'
-import {getFileList } from '../../api/file'
+import {getRoleList } from '../../api/role'
 import {addUser,editUser} from '../../api/user'
 import { ElMessage } from 'element-plus'
 import {baseURL_dev} from '../../config/baseURL'
@@ -12,8 +12,6 @@ const useStore=userStore()
 const token=useStore.token
 // 抽屉状态
 const dialog=ref(false)
-// 抽屉标题
-const title=ref('添加文件')
 // 定义一个ref对象绑定表单
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = ref({
@@ -23,37 +21,37 @@ const ruleForm = ref({
     name:'',
     userPic:'',
     phone:'',
-    fileId:''
+    roleId:''
 })
-const validfileUserName = (_: any, value: any, callback: any) => {
+const validRoleUserName = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('账号不能为空'))
   } else {
     callback()
   }
 }
-const validfilePwd = (_: any, value: any, callback: any) => {
+const validRolePwd = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('密码不能为空'))
   } else {
     callback()
   }
 }
-const validfileName = (_: any, value: any, callback: any) => {
+const validRoleName = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('姓名不能为空'))
   } else {
     callback()
   }
 }
-const validfileId = (_: any, value: any, callback: any) => {
+const validRoleId = (_: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('请选择文件'))
+    callback(new Error('请选择角色'))
   } else {
     callback()
   }
 }
-const validfilePhone = (_: any, value: any, callback: any) => {
+const validRolePhone = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('电话不能为空'))
   } else {
@@ -62,11 +60,11 @@ const validfilePhone = (_: any, value: any, callback: any) => {
 }
 //验证对象
 const rules = ref<FormRules<typeof ruleForm>>({
-    username: [{ validator: validfileUserName, trigger: 'blur' }],
-    password: [{ validator: validfilePwd, trigger: 'blur' }],
-    name: [{ validator: validfileName, trigger: 'blur' }],
-    fileId: [{ validator: validfileId, trigger: 'blur' }],
-    phone: [{ validator: validfilePhone, trigger: 'blur' }]
+    username: [{ validator: validRoleUserName, trigger: 'blur' }],
+    password: [{ validator: validRolePwd, trigger: 'blur' }],
+    name: [{ validator: validRoleName, trigger: 'blur' }],
+    roleId: [{ validator: validRoleId, trigger: 'blur' }],
+    phone: [{ validator: validRolePhone, trigger: 'blur' }]
 })
 const eimt=defineEmits(['success'])
 //提交
@@ -80,7 +78,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           username:ruleForm.value.username,
           password:ruleForm.value.password,
           name:ruleForm.value.name,
-          fileId:ruleForm.value.fileId,
+          roleId:ruleForm.value.roleId,
           userPic:ruleForm.value.userPic,
           phone:ruleForm.value.phone
         }
@@ -116,7 +114,7 @@ const closeDr=() =>{
         name:'',
         userPic:'',
         phone:'',
-        fileId:''
+        roleId:''
     }
 }
 // 抽屉打开时的回调
@@ -130,17 +128,17 @@ const open=(obj:any)=>{
 defineExpose({
     open
 })
-// 获取文件信息
-const getfileInfo =async (page?:number,pageSize?:number) => {
-  await getfileList(page,pageSize).then((res)=>{
-      fileList.value=res.data
+// 获取角色信息
+const getRoleInfo =async (page?:number,pageSize?:number) => {
+  await getRoleList(page,pageSize).then((res)=>{
+      roleList.value=res.data
       
   })
 }
-// 文件列表
-const fileList=ref<any>([])
+// 角色列表
+const roleList=ref<any>([])
 onMounted(()=>{
-  getfileInfo()
+  getRoleInfo()
 })
 // 头像
 import { Plus } from '@element-plus/icons-vue'
@@ -213,13 +211,13 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
           <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
         </el-upload>
       </el-form-item>
-      <el-form-item label="文件" prop="fileId">
+      <el-form-item label="角色" prop="roleId">
           <el-select
-          v-model="ruleForm.fileId"
-          placeholder="请选择文件"
+          v-model="ruleForm.roleId"
+          placeholder="请选择角色"
           clearable
         >
-          <el-option v-for="item in fileList" :key="item.fileId" :label="item.fileName" :value="item.fileId" />
+          <el-option v-for="item in roleList" :key="item.roleId" :label="item.roleName" :value="item.roleId" />
         </el-select>
       </el-form-item>
       <el-form-item label="电话" prop="phone">
