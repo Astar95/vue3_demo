@@ -58,3 +58,15 @@ export const post=async (url:string,params:object={})=>{
     let  {data} = await  instance.post(url,params)
     return data
 }
+
+//put 请求
+export const put=async (url:string,params:object={})=>{
+    let  {data} = await  instance.put(url,params)
+    return data
+}
+
+//delete 请求
+export const deleteRequest=async (url:string,params:object={})=>{
+    let  {data} = await  instance.delete(url,params)
+    return data
+}

@@ -19,8 +19,8 @@ import {Files,Folder,FolderOpened,Cpu,DocumentCopy,
             <el-icon><Files /></el-icon>
               文件管理
           </template>
-          <el-menu-item index="/index/role"><el-icon><Folder /></el-icon>全部文件夹</el-menu-item>
-          <el-menu-item index="/index/user"><el-icon><FolderOpened /></el-icon>默认文件夹</el-menu-item>
+          <el-menu-item index="/index/file"><el-icon><Folder /></el-icon>全部文件夹</el-menu-item>
+          <el-menu-item index="/index/file"><el-icon><FolderOpened /></el-icon>默认文件夹</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="2">
           <template #title>

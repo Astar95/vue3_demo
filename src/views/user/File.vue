@@ -1,28 +1,28 @@
-<!-- 角色管理 -->
+<!-- 文件管理 -->
 <script setup lang="ts">
 import { ref,onMounted } from 'vue';
-import { getRoleList,roleDelete } from '../../api/role'
+import { getFileList,deleteFile } from '../../api/file'
 import PublicTables from '../../components/PublicTables.vue'
-import AddorEditDrawer from '../../components/role/AddorEditDrawer.vue'
+import AddorEditDrawer from '../../components/file/AddorEditDrawer.vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import PublicPagination from '../../components/PublicPagination.vue'
 
-// 获取角色列表
-const roleList = ref([])
-const getRoleListFun = async (page?:any,pageSize?:any) => {
+// 获取文件列表
+const fileList = ref([])
+const getFileListFun = async (page?:any,pageSize?:any) => {
   
-  const res = await getRoleList(page,pageSize)
-  roleList.value = res.data
+  const res = await getFileList(page,pageSize)
+  fileList.value = res.data
 
   total.value=res.total
 }
 onMounted(()=>{
-  getRoleListFun()
+  getFileListFun()
 })
 //定义编辑组件ref对象--通过AddorEditRef可以获取组件暴露的实例对象
 let AddorEditRef=ref()
 // 添加抽屉
-const addRole=()=>{
+const addfile=()=>{
   // 通过ref调用子组件暴露出来的方法
   AddorEditRef.value.open({})
 }
@@ -36,7 +36,7 @@ const handleEdit=(row:any)=>{
 }
 
 // 删除
-const handleDelete=(roleId:any)=>{
+const handleDelete=(fileId:any)=>{
   ElMessageBox.confirm(
     '确定要删除吗?',
     '提示',
@@ -45,7 +45,7 @@ const handleDelete=(roleId:any)=>{
       cancelButtonText: '取消',
       type: 'warning',
     }).then(async () => {
-      await roleDelete(roleId).then(()=>{
+      await deleteFile(fileId).then(()=>{
         ElMessage.success('删除成功')
         pageRef.value.handleEdit()
       })
@@ -75,7 +75,7 @@ const total=ref(0)
 // 接收分页子组件传过来的数据--current-page 改变时触发
 const fetchData=(obj:any)=>{
   
-  getRoleListFun(obj.page,obj.pageSize)
+  getFileListFun(obj.page,obj.pageSize)
 }
 </script>
 
@@ -83,18 +83,18 @@ const fetchData=(obj:any)=>{
   <div style="padding: 20px;">
     <!-- 添加按钮 -->
     <div>
-      <el-button type="primary" plain style="margin-bottom: 20px;" @click="addRole">添加</el-button>
+      <el-button type="primary" plain style="margin-bottom: 20px;" @click="addfile">添加</el-button>
     </div>
     <!-- 新增编辑抽屉 -->
     <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
     <!-- 表格 -->
-    <PublicTables :tableData="roleList">
+    <PublicTables :tableData="fileList">
       <template #tableColumns>
-        <el-table-column label="编号" align="center" prop="roleId">
+        <el-table-column label="编号" align="center" prop="fileId">
         </el-table-column>
-        <el-table-column label="角色名称" align="center">
+        <el-table-column label="文件名称" align="center">
           <template #default="scope">
-            <el-tag :type="scope.row.roleId===1?'danger':''">{{ scope.row.roleName }}</el-tag>
+            <el-tag :type="scope.row.fileId===1?'danger':''">{{ scope.row.fileName }}</el-tag>
           </template>
         </el-table-column>
       </template>
@@ -108,7 +108,7 @@ const fetchData=(obj:any)=>{
           <el-button
             size="small"
             type="danger"
-            @click="handleDelete(scope.row.roleId)"
+            @click="handleDelete(scope.row.fileId)"
             >删除</el-button
           >
         </template>
