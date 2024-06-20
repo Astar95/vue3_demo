@@ -1,6 +1,6 @@
 <!-- 修改密码 -->
 <script setup lang="ts">
-import {getLoginInfo,editUser} from '../../api/user'
+import {getUserInfo,updateUserInfo} from '../../api/user'
 import type { FormInstance, FormRules } from 'element-plus'
 import {ref,onMounted} from 'vue'
 import {userStore} from '../../store'
@@ -8,17 +8,16 @@ import { ElMessage } from 'element-plus'
 const useStore=userStore()
 const userInfo = ref<any>({
     id:null,
-    username:'',
+    phone:'',
     password:'',
     name:'',
     userPic:'',
-    phone:'',
     roleId:'',
     confirmPwd:''
 })
 // 获取当前登录的个人信息
 const getUserData=async ()=>{
-  await getLoginInfo(useStore.userData.username).then((res)=>{
+  await getUserInfo(useStore.userData.id).then((res)=>{
     userInfo.value=res.data
     userInfo.value.confirmPwd=''
     
@@ -57,14 +56,13 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       const data={
           id:userInfo.value.id,
-          username:userInfo.value.username,
+          phone:userInfo.value.phone,
           password:userInfo.value.password,
           name:userInfo.value.name,
           roleId:userInfo.value.roleId,
           userPic:userInfo.value.userPic,
-          phone:userInfo.value.phone
         }
-      await editUser(data).then(()=>{
+      await updateUserInfo(userInfo.id,data).then(()=>{
         ElMessage.success('保存成功')
         userInfo.value.confirmPwd=''
         useStore.setData(userInfo.value)
@@ -111,4 +109,4 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 </template>
 
 <style scoped lang="scss">
-</style>
+</style>../../store/user

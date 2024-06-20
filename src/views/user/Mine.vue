@@ -1,6 +1,6 @@
 <!-- 个人中心 -->
 <script setup lang="ts">
-import {getLoginInfo,editUser} from '../../api/user'
+import {getUserInfo,updateUser} from '../../api/user'
 import type { FormInstance, FormRules } from 'element-plus'
 import {ref,onMounted} from 'vue'
 import {userStore} from '../../store'
@@ -14,16 +14,15 @@ import type { UploadProps } from 'element-plus'
 const useStore=userStore()
 const userInfo = ref<any>({
     id:null,
-    username:'',
-    password:'',
     name:'',
+    password:'',
     userPic:'',
     phone:'',
     roleId:''
 })
 // 获取当前登录的个人信息
 const getUserData=async ()=>{
-  await getLoginInfo(useStore.userData.username).then((res)=>{
+  await getUserInfo(useStore.userData.id).then((res:any)=>{
     userInfo.value=JSON.parse(JSON.stringify(res.data))
   })
 }
@@ -41,9 +40,9 @@ onMounted(()=>{
 })
 // 定义一个ref对象绑定表单
 const ruleFormRef = ref<FormInstance>()
-  const validRoleUserName = (_: any, value: any, callback: any) => {
+  const validRolePhone = (_: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('账号不能为空'))
+    callback(new Error('手机号码不能为空'))
   } else {
     callback()
   }
@@ -69,20 +68,14 @@ const validRoleId = (_: any, value: any, callback: any) => {
     callback()
   }
 }
-const validRolePhone = (_: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('电话不能为空'))
-  } else {
-    callback()
-  }
-}
+
 //验证对象
 const rules = ref<FormRules<typeof userInfo>>({
-    username: [{ validator: validRoleUserName, trigger: 'blur' }],
+    phone: [{ validator: validRolePhone, trigger: 'blur' }],
     password: [{ validator: validRolePwd, trigger: 'blur' }],
     name: [{ validator: validRoleName, trigger: 'blur' }],
-    roleId: [{ validator: validRoleId, trigger: 'blur' }],
-    phone: [{ validator: validRolePhone, trigger: 'blur' }]
+    roleId: [{ validator: validRoleId, trigger: 'blur' }]
+
 })
 // 保存
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -91,14 +84,13 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       const data={
           id:userInfo.value.id,
-          username:userInfo.value.username,
-          password:userInfo.value.password,
           name:userInfo.value.name,
+          password:userInfo.value.password,
           roleId:userInfo.value.roleId,
           userPic:userInfo.value.userPic,
           phone:userInfo.value.phone
         }
-      await editUser(data).then(()=>{
+      await updateUserInfo(data).then(()=>{
         ElMessage.success('保存成功')
         useStore.setData(userInfo.value)
       })
@@ -107,7 +99,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     }
   })
 }
-const token=useStore.token
+const session_id=useStore.session_id
 // 文件上传成功时的钩子
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response
@@ -151,8 +143,8 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
         label-width="120px"
         class="demo-ruleForm"
       >
-        <el-form-item label="账号" prop="username">
-          <el-input disabled v-model="userInfo.username" autocomplete="off" style="width: 40%;"/>
+        <el-form-item label="手机号" prop="phone">
+          <el-input disabled v-model="userInfo.phone" autocomplete="off" style="width: 40%;"/>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="userInfo.name" autocomplete="off" style="width: 40%;"/>
@@ -164,7 +156,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
-            :headers="{Authorization:token}"
+            :headers="{Authorization:session_id}"
             name="image"
           >
             <img v-if="userInfo.userPic" :src="userInfo.userPic" class="avatar" />
@@ -179,9 +171,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
           >
             <el-option v-for="item in roleList" :key="item.roleId" :label="item.roleName" :value="item.roleId" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="电话" prop="phone">
-          <el-input v-model="userInfo.phone" autocomplete="off" style="width: 40%;"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm(ruleFormRef)"
@@ -221,4 +210,4 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   text-align: center;
   border: 1px dashed #d9d9d9;
 }
-</style>
+</style>../../store/user

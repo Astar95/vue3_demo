@@ -38,7 +38,6 @@ instance.interceptors.request.use(
       // TODO 5. 处理401错误
       // 错误的特殊情况 => 401 权限不足 或 sessionid 过期 => 拦截到登录
       if (err.response.status === 401) {
-        
         router.push('/login')
       }
   
@@ -56,5 +55,17 @@ export const get=async (url:string,params:object={})=>{
 //post 请求
 export const post=async (url:string,params:object={})=>{
     let  {data} = await  instance.post(url,params)
+    return data
+}
+
+//put 请求
+export const put=async (url:string,params:object={})=>{
+    let  {data} = await  instance.put(url,params)
+    return data
+}
+
+//delete 请求
+export const deleteRequest=async (url:string,params:object={})=>{
+    let  {data} = await  instance.delete(url,params)
     return data
 }

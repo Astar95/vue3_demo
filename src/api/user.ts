@@ -1,4 +1,4 @@
-import {post,get} from '../utils/request.ts'
+import {post,get,put,deleteRequest} from '../utils/request.ts'
 
 //  登录接口
 export const login =(data: object) => {
@@ -12,27 +12,37 @@ export const register =(data: object) => {
     return post('register', data)
 }
 
-// 获取登录信息
-export const getLoginInfo =(data:string) => {
-    return get(`/my/getUserInfo?phone=${data}`)
+// 获取用户列表
+export const getUserList = () => {
+
+    return get('user')
 }
 
-// 获取用户列表信息
-export const getUserList =(page:number=1,pageSize:number=5,roleId:number=0) => {
-    return get(`/my/userList?page=${page}&pageSize=${pageSize}&roleId=${roleId}`)
+// 创建用户
+export const createUser = (data: object) => {
+
+    return post('user', data)
 }
 
-// 删除用户信息
-export const delUser=(id:number)=>{
-    return get(`/my/deleteUser?id=${id}`)
+//批量创建用户
+export const batchCreateUser = (data: object) => {
+
+    return post('user/batchCreate', data)
 }
 
-// 新增用户信息
-export const addUser=(data:object)=>{
-    return post('/my/addUser',data)
+// 获取用户详情
+export const getUserInfo = (id: number) => {
+
+    return get(`user/${id}`)
+}
+// 更新用户
+export const updateUser = (id: number, data: object) => {
+
+    return put(`user/${id}`, data)
 }
 
-// 编辑用户信息
-export const editUser=(data:object)=>{
-    return post('/my/editUser',data)
+// 删除用户
+export const deleteUser = (id: number) => {
+
+    return deleteRequest(`user/${id}`)
 }

@@ -21,9 +21,9 @@ const router=createRouter({
             children: [
                 {
                   path: '',
-                  name: '主页',
-                  meta:{title:'主页'},
-                  component:()=>import('../views/Home.vue')
+                  name: '首页',
+                  meta:{title:'首页'},
+                  component:()=>import('../views/user/File.vue')
                 },
                 {
                     path: 'mine',
@@ -49,24 +49,6 @@ const router=createRouter({
                   meta:{title:'默认文件夹'},
                   component:()=>import('../views/user/File.vue')
                 }
-                // {
-                //   path: 'roomType',
-                //   name: '房型管理',
-                //   meta:{title:'房型管理'},
-                //   component:()=>import('../views/room/RoomType.vue')
-                // },
-                // {
-                //   path: 'room',
-                //   name: '房间管理',
-                //   meta:{title:'房间管理'},
-                //   component:()=>import('../views/room/Room.vue')
-                // },
-                // {
-                //   path: 'liveIn',
-                //   name: '入住用户',
-                //   meta:{title:'入住用户'},
-                //   component:()=>import('../views/custom/LiveIn.vue')
-                // }
             ],
         },
     ]

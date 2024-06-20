@@ -70,4 +70,4 @@ const exit=()=>{
 </template>
 
 <style lang="scss" scoped>
-</style>
+</style>../../store/user

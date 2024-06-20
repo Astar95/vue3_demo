@@ -3,7 +3,7 @@ import {ref,watch,onMounted} from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { login,register} from '../api/user'
 import {userStore} from '../store'
-     import { ElMessage } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import router  from '../router'
 
 
@@ -12,10 +12,12 @@ const isRegister = ref(false)
 const checked=ref(false)
 
 // 表单校验方法
-// 验证账号
+// 验证手机号
 const validatePhone = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('手机号不能为空'))
+  } else if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(value)) {
+    callback(new Error('手机号格式不正确'))
   } else {
     callback()
   }
@@ -24,6 +26,8 @@ const validatePhone = (_: any, value: any, callback: any) => {
 const validatePwd = (_: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('密码不能为空'))
+  } else if (value.length < 6) {
+    callback(new Error('密码长度不能小于6位'))
   } else {
     callback()
   }
@@ -43,6 +47,7 @@ const ruleForm = ref({
   password: '',
   repassword:''
 })
+
 //验证对象
 const rules = ref<FormRules<typeof ruleForm>>({
   phone: [{ validator: validatePhone, trigger: 'blur' }],
@@ -68,18 +73,7 @@ const userLogin =(formEl: FormInstance | undefined) => {
         if(res.message==='success'){
           //登录成功后保存session_id
           sessionStorage.setItem('session_id',res.data.session_id)
-          // const user=await getLoginInfo(ruleForm.value.phone)
-          // useData.setData(user.data)
-          // //记住我
-          // if(checked.value){
-          //   useData.setUserLogin({
-          //     phone:ruleForm.value.phone,
-          //     password:ruleForm.value.password,
-          //     checked:checked.value
-          //   })
-          // }else{
-          //   useData.removeUserLogin()
-          // }
+
           ElMessage.success('登录成功')
           router.push('/index')
         }else{
@@ -131,7 +125,7 @@ onMounted(()=>{
 
 <template>
   <el-row class="login-page">
-    <el-col :span="6" :offset="3" class="form">
+    <el-col :span="6" :offset="9" class="form">
       <!-- 注册相关表单 -->
       <el-form
         :model="ruleForm"
