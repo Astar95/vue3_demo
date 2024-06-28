@@ -2,8 +2,14 @@
 import Header from './layout/Header.vue'
 import Aside from './layout/Aside.vue'
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { userStore } from '../store';
+let useStore = userStore()
+let router = useRouter()
 onMounted(() =>{
-  
+  if(!useStore.userData.phone){
+    router.push('/')
+  }
 })
 </script>
 

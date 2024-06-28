@@ -3,13 +3,13 @@
 import { ref,onMounted } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus'
 import {getRoleList } from '../../api/role'
-import {addUser,editUser} from '../../api/user'
+import {createUser,updateUserInfo} from '../../api/user'
 import { ElMessage } from 'element-plus'
 import {baseURL_dev} from '../../config/baseURL'
 import { userStore } from '../../store'
-// token
+// session_id
 const useStore=userStore()
-const token=useStore.token
+const session_id=useStore.session_id
 // 抽屉状态
 const dialog=ref(false)
 // 定义一个ref对象绑定表单
@@ -82,14 +82,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
           userPic:ruleForm.value.userPic,
           phone:ruleForm.value.phone
         }
-        await editUser(data).then(()=>{
+        await updateUserInfo(id,data).then(()=>{
             dialog.value=false
             ElMessage.success('编辑成功')
             eimt('success','edit')
         })
       }else{
         //新增
-        await addUser(ruleForm.value).then(()=>{
+        await createUser(ruleForm.value).then(()=>{
             dialog.value=false
             ElMessage.success('新增成功')
             eimt('success','add')
@@ -204,7 +204,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
-          :headers="{Authorization:token}"
+          :headers="{Authorization:session_id}"
           name="image"
         >
           <img v-if="ruleForm.userPic" :src="ruleForm.userPic" class="avatar" />

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { Service,Postcard,User,Avatar } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import  {userStore}  from '../../store'
+import { userStore } from '../../store'
 import router from '../../router'
-const useStore=userStore()
+
+const useStore = userStore()
 const exit=()=>{
     ElMessageBox.confirm(
     '确定要退出登录吗?',
@@ -20,7 +21,7 @@ const exit=()=>{
         message: '退出成功',
       })
       // 退出成功清空缓存
-      useStore.removeSessionid()
+      useStore.removeSession_id()
       useStore.removeUser()
       // 跳转到登录页面
       router.push('/login')
@@ -60,7 +61,7 @@ const exit=()=>{
         <el-sub-menu index="admin">
             <template #title>
                 <el-icon><Avatar /></el-icon>
-                {{ useStore.userData.name }}
+                {{ useStore.userData.nick_name }}
             </template>
             <el-menu-item index="/index/mine">个人中心</el-menu-item>
             <el-menu-item index="/index/setPwd">修改密码</el-menu-item>

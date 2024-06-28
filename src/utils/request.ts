@@ -1,7 +1,4 @@
 import axios from 'axios'
-import router from '../router'
-import { ElMessage } from 'element-plus'
-import { userStore } from '../store'
 import {baseURL_dev} from '../config/baseURL.ts'
 
 //初始化一个axios对象
@@ -9,8 +6,7 @@ const instance = axios.create({
     baseURL: baseURL_dev,
     timeout: 3000
 });
-// TODO 2. 携带sessionid
-const useStore = userStore()
+
 // 请求拦截器
 instance.interceptors.request.use(
     (config) => {
@@ -22,31 +18,13 @@ instance.interceptors.request.use(
   )
   
   // 响应拦截器
-  instance.interceptors.response.use(
-    (res) => {
-      if(res.data.code === 401){
-        useStore.removeSessionid()
-        useStore.removeUser()
-        ElMessage.error('登录sessionid过期，请重新登录')
-        router.push('/login')
-      }
-      return res
-    },
-    (err) => {
-      console.log(err);
-      
-      // TODO 5. 处理401错误
-      // 错误的特殊情况 => 401 权限不足 或 sessionid 过期 => 拦截到登录
-      if (err.response.status === 401) {
-        
-        router.push('/login')
-      }
-  
-      // 错误的默认情况 => 只要给提示
-      ElMessage.error(err.response.data.message || '服务异常')
-      return Promise.reject(err)
-    }
-  )
+instance.interceptors.response.use(function (response) {
+  // 对响应数据做点什么
+  return response;
+}, function (error) {
+  // 对响应错误做点什么
+  return Promise.reject(error);
+})
 
 //get 请求
 export const get=async (url:string,params:object={})=>{

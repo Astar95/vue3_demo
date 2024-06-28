@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 const router=createRouter({
     history:createWebHistory(),
@@ -39,36 +41,29 @@ const router=createRouter({
                 },
                 {
                   path: 'file',
-                  name: '全部文件夹',
-                  meta:{title:'全部文件夹'},
-                  component:()=>import('../views/user/File.vue')
+                  name: '文件上传',
+                  meta:{title:'文件上传'},
+                  component:()=>import('../views/File.vue')
                 },
                 {
                   path: 'file',
-                  name: '默认文件夹',
-                  meta:{title:'默认文件夹'},
-                  component:()=>import('../views/user/File.vue')
+                  name: '文件列表',
+                  meta:{title:'文件列表'},
+                  component:()=>import('../views/Filelist.vue')
                 }
-                // {
-                //   path: 'roomType',
-                //   name: '房型管理',
-                //   meta:{title:'房型管理'},
-                //   component:()=>import('../views/room/RoomType.vue')
-                // },
-                // {
-                //   path: 'room',
-                //   name: '房间管理',
-                //   meta:{title:'房间管理'},
-                //   component:()=>import('../views/room/Room.vue')
-                // },
-                // {
-                //   path: 'liveIn',
-                //   name: '入住用户',
-                //   meta:{title:'入住用户'},
-                //   component:()=>import('../views/custom/LiveIn.vue')
-                // }
             ],
         },
     ]
+})
+
+router.beforeEach((to,from,next)=>{
+    NProgress.start()
+    next()
+})
+router.afterEach((to,from)=>{
+    if(to.meta&&to.meta.title){
+        document.title=to.meta.title
+    }
+    NProgress.done()
 })
 export default router

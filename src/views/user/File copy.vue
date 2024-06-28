@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import { ref,onMounted } from 'vue';
 import { getFileList,deleteFile } from '../../api/file'
-import PublicTables from '../../components/PublicTables.vue'
 import AddorEditDrawer from '../../components/file/AddorEditDrawer.vue'
 import { ElMessage,ElMessageBox,ElTable } from 'element-plus'
 import PublicPagination from '../../components/PublicPagination.vue'
@@ -32,11 +31,7 @@ onMounted(()=>{
 })
 //定义编辑组件ref对象--通过AddorEditRef可以获取组件暴露的实例对象
 let AddorEditRef=ref()
-// 添加抽屉
-const uploadfile=()=>{
-  // 通过ref调用子组件暴露出来的方法
-  AddorEditRef.value.open({})
-}
+
 
 // 编辑
 const handleEdit=(row:any)=>{
@@ -94,7 +89,7 @@ const fetchData=(obj:any)=>{
   <div >
     <div style="display:flex; flex=1 ">
       <!-- 上传文件按钮 -->
-    <el-upload
+    <el-upload-
     ref="uploadRef"
     class="upload-demo"
     action=""
@@ -104,10 +99,9 @@ const fetchData=(obj:any)=>{
       上传文件
       </el-button>
     </el-upload>
-    <el-button size="small" type="primary">新建文件夹</el-button>
+    <el-button size="small" type="primary">新建文件夹</el-button> 
     <el-button size="small" type="primary">转换</el-button>
     </div>
-    
     <!-- 新增编辑抽屉 -->
     <AddorEditDrawer ref="AddorEditRef" @success="onSuccess"></AddorEditDrawer>
     <!-- 表格 -->

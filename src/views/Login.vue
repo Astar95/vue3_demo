@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import {ref,watch,onMounted} from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { login,register} from '../api/user'
-import {userStore} from '../store'
-     import { ElMessage } from 'element-plus';
+import { login,register,getUserInfo} from '../api/user'
+import { ElMessage } from 'element-plus';
 import router  from '../router'
+import {userStore} from '../store'
 
 
 const ruleFormRef = ref<FormInstance>()
 const isRegister = ref(false)
 const checked=ref(false)
+
 
 // 表单校验方法
 // 验证账号
@@ -52,11 +53,6 @@ const rules = ref<FormRules<typeof ruleForm>>({
 
 const useData=userStore()
 
-// 获取记住我信息
-const userLoginDate=useData.userLogin
-ruleForm.value.phone=userLoginDate.phone===''?'':userLoginDate.phone
-ruleForm.value.password=userLoginDate.password===''?'':userLoginDate.password
-checked.value=userLoginDate.checked
 
 // 登录方法
 const userLogin =(formEl: FormInstance | undefined) => {
@@ -66,20 +62,21 @@ const userLogin =(formEl: FormInstance | undefined) => {
       // 请求登录接口
       await login(ruleForm.value).then(async (res:any)=>{
         if(res.message==='success'){
-          //登录成功后保存session_id
-          sessionStorage.setItem('session_id',res.data.session_id)
-          // const user=await getLoginInfo(ruleForm.value.phone)
-          // useData.setData(user.data)
-          // //记住我
-          // if(checked.value){
-          //   useData.setUserLogin({
-          //     phone:ruleForm.value.phone,
-          //     password:ruleForm.value.password,
-          //     checked:checked.value
-          //   })
-          // }else{
-          //   useData.removeUserLogin()
-          // }
+          useData.setSession_id(res.data.session_id)
+          const user=await getUserInfo(res.data.user.id)
+          useData.setData(user.data)
+          // // 登录成功后，将session_id存入sessionStorage
+          // sessionStorage.setItem('session_id',res.data.session_id)
+          //记住我
+          if(checked.value){
+            useData.setUserLogin({
+              phone:ruleForm.value.phone,
+              password:ruleForm.value.password,
+              checked:checked.value
+            })
+          }else{
+            useData.removeUserLogin()
+          }
           ElMessage.success('登录成功')
           router.push('/index')
         }else{
@@ -131,7 +128,7 @@ onMounted(()=>{
 
 <template>
   <el-row class="login-page">
-    <el-col :span="6" :offset="3" class="form">
+    <el-col :span="6" :offset="9" class="form">
       <!-- 注册相关表单 -->
       <el-form
         :model="ruleForm"
